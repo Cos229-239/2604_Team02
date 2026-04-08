@@ -1,0 +1,150 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meeting Snapshot — Cycle 2604 Week 1 — 2604_Team01</title>
+<style>
+:root{--bg:#f6f8fa;--card:#fff;--border:#d0d7de;--text:#1f2328;--muted:#656d76;--accent:#0969da;--high:#cf222e;--low:#1a7f37;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;margin:0;padding:0;background:var(--bg);color:var(--text);line-height:1.5;}
+.app{display:flex;min-height:100vh;}
+.sidebar{position:fixed;left:0;top:0;width:172px;height:100vh;overflow-y:auto;background:#141c28;color:#fff;padding:0.75rem 0;flex-shrink:0;border-right:1px solid rgba(255,255,255,0.06);}
+.sidebar a{display:block;color:rgba(230,237,243,0.82);text-decoration:none;padding:0.32rem 0.9rem;font-size:0.78rem;}
+.nav-cycle{font-weight:700;font-size:1rem;margin-top:0.5rem;}
+.nav-week{font-weight:600;margin-top:0.5rem;}
+.nav-team{padding-left:1.5rem;font-size:0.85rem;}
+.sidebar a:hover{background:rgba(88,166,255,0.08);color:#fff;}
+.sidebar a.active{background:rgba(88,166,255,0.18);color:#fff;}
+.sidebar-brand{display:flex;flex-direction:column;align-items:center;gap:0.4rem;padding:0.75rem 0.75rem 0.85rem;border-bottom:1px solid rgba(255,255,255,0.08);text-align:center;}
+.logo-link{flex-shrink:0;display:flex;justify-content:center;}
+.sidebar-logo{width:34px;height:34px;display:block;}
+.brand-text{display:flex;flex-direction:column;line-height:1.15;align-items:center;}
+.brand-org{font-weight:700;font-size:0.74rem;letter-spacing:0.02em;}
+.brand-cycle{font-size:0.68rem;opacity:0.82;}
+.nav-week-group{margin-bottom:0.45rem;}
+.nav-phase-label{display:block;padding:0.3rem 0.9rem 0.2rem;text-align:center;font-size:0.66rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:#8b949e;}
+.sidebar-version{margin-top:0.75rem;padding:0.55rem 0.9rem 0.2rem;text-align:center;font-size:0.62rem;letter-spacing:0.08em;color:rgba(139,148,158,0.9);border-top:1px solid rgba(255,255,255,0.08);}
+.nav-week{display:block;font-weight:600;font-size:0.98rem;margin-top:0.2rem;padding:0.28rem 0.9rem;}
+.nav-week.nav-week-current{color:#b7f7c3;background:rgba(63,185,80,0.16);}
+.nav-week.nav-week-current:hover{background:rgba(63,185,80,0.24);color:#fff;}
+.nav-week.nav-week-tbd{color:#fda4a4;background:rgba(248,81,73,0.08);}
+.nav-week.nav-week-tbd:hover{background:rgba(248,81,73,0.14);color:#fff;}
+.nav-team{display:flex;align-items:center;padding:0.14rem 0.9rem 0.14rem 1.15rem;font-size:0.62rem;}
+.nav-team-bullet{display:inline-block;width:6px;height:6px;border-radius:50%;background:#f97316;margin-right:0.5rem;flex-shrink:0;}
+.nav-teams{list-style:none;margin:0.25rem 0 0 0;padding:0 0 0 0.75rem;font-size:0.85rem;}
+.nav-teams li{margin:0.1rem 0;}
+.content{flex:1;margin-left:172px;padding:1.5rem;max-width:900px;}
+.report-header{background:var(--text);color:#fff;padding:1rem 1.25rem;margin:0 0 0.5rem 0;font-size:0.95rem;border-radius:0 0 8px 0;display:flex;justify-content:space-between;align-items:center;}
+.report-subheader{font-size:0.85rem;color:var(--muted);margin:0 0 0.15rem 0;}
+.section{margin:1.5rem 0;background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.section-git{border-left:4px solid #0969da;}
+.section-trello{border-left:4px solid #2da44e;}
+.section-discord{border-left:4px solid #8250df;}
+.section h2{margin:0;padding:0.75rem 1rem;background:var(--bg);font-size:1rem;border-bottom:1px solid var(--border);}
+.section-git h2{background:linear-gradient(90deg,#0969da08,var(--bg));}
+.section-trello h2{background:linear-gradient(90deg,#2da44e08,var(--bg));}
+.section-discord h2{background:linear-gradient(90deg,#8250df08,var(--bg));}
+.section-inner{padding:1rem 1.25rem;}
+table{width:100%;border-collapse:collapse;font-size:0.9rem;}
+th,td{border:1px solid var(--border);padding:0.5rem 0.75rem;text-align:left;}
+th{background:var(--bg);font-weight:600;}
+.risk-high{color:var(--high);font-weight:600;}
+.risk-low{color:var(--low);}
+code{background:#24292f;color:#f0f6fc;padding:0.2em 0.5em;border-radius:4px;font-size:0.88em;font-family:ui-monospace,monospace;}
+.members-list{list-style:none;padding:0;margin:0;}
+.members-list li{padding:0.25rem 0;border-bottom:1px solid var(--border);}
+.member-detail summary{cursor:pointer;user-select:none;}
+.member-detail-body{margin-top:0.25rem;font-size:0.85rem;color:var(--muted);}
+.members-list li:last-child{border-bottom:none;}
+.quick-ref{margin:0.5rem 0 1.25rem 0;padding:0.5rem 0;font-size:0.9rem;color:var(--muted);}
+.issues-list{list-style:none;padding:0;}
+.section-team-id{font-size:0.75rem;color:var(--muted);font-weight:400;display:block;margin-top:0.15rem;}
+.section-collapsible summary{cursor:pointer;list-style:none;user-select:none;}
+.section-collapsible summary::-webkit-details-marker{display:none;}
+.section-collapsible summary::before{content:'▼';font-size:0.75rem;margin-right:0.5rem;opacity:0.7;}
+.section-collapsible:not([open]) summary::before{content:'▶';}
+.git-detail-block{margin:1rem 0 1rem 1.5rem;padding:0.6rem 0.75rem;background:var(--bg);border-radius:6px;font-size:0.85rem;}
+.git-detail-block .code-block{font-size:0.8rem;padding:0.4rem 0.5rem;margin:0.2rem 0 0.25rem 0;}
+.git-detail-block .fix-steps li{margin:0.35rem 0;}
+.issues-list li{padding:0.5rem 0;border-bottom:1px solid var(--border);color:var(--high);}
+.files-sample{font-size:0.85rem;color:var(--muted);}
+.report-subheader-warning{margin:0.45rem 0 0.2rem 0;padding:0.55rem 0.75rem;border:1px solid #f2cc60;border-radius:8px;background:#fff8db;color:#7a5a00;font-weight:600;}
+</style></head><body><div class="app">
+<nav class="sidebar">
+<div class="sidebar-brand">
+<a href="index.html" class="logo-link"><img src="logo.png" alt="Logo" class="sidebar-logo"></a>
+<div class="brand-text"><span class="brand-org">Cos229-239</span><span class="brand-cycle">2604</span></div>
+</div>
+<a href="index.html" class="nav-home">Home</a>
+<div class="nav-phase-label">PNP2</div>
+<div class="nav-week-group">
+<a href="W01_2604_Team01.html" class="nav-week nav-week-current active">Week 01</a>
+<a href="W01_2604_Team01.html" class="nav-team active"><span class="nav-team-bullet"></span>Team 01</a>
+<a href="W01_2604_Team02.html" class="nav-team"><span class="nav-team-bullet"></span>Team 02</a>
+</div>
+<div class="nav-week-group">
+<a href="W02_2604_Team01.html" class="nav-week nav-week-tbd">Week 02</a>
+<a href="W02_2604_Team01.html" class="nav-team"><span class="nav-team-bullet"></span>Team 01</a>
+<a href="W02_2604_Team02.html" class="nav-team"><span class="nav-team-bullet"></span>Team 02</a>
+</div>
+<div class="nav-week-group">
+<a href="W03_2604_Team01.html" class="nav-week nav-week-tbd">Week 03</a>
+<a href="W03_2604_Team01.html" class="nav-team"><span class="nav-team-bullet"></span>Team 01</a>
+<a href="W03_2604_Team02.html" class="nav-team"><span class="nav-team-bullet"></span>Team 02</a>
+</div>
+<div class="nav-week-group">
+<a href="W04_2604_Team01.html" class="nav-week nav-week-tbd">Week 04</a>
+<a href="W04_2604_Team01.html" class="nav-team"><span class="nav-team-bullet"></span>Team 01</a>
+<a href="W04_2604_Team02.html" class="nav-team"><span class="nav-team-bullet"></span>Team 02</a>
+</div>
+<div class="nav-phase-label">PNP3</div>
+<div class="nav-week-group">
+<a href="W05_2604_Team01.html" class="nav-week nav-week-tbd">Week 05</a>
+<a href="W05_2604_Team01.html" class="nav-team"><span class="nav-team-bullet"></span>Team 01</a>
+<a href="W05_2604_Team02.html" class="nav-team"><span class="nav-team-bullet"></span>Team 02</a>
+</div>
+<div class="nav-week-group">
+<a href="W06_2604_Team01.html" class="nav-week nav-week-tbd">Week 06</a>
+<a href="W06_2604_Team01.html" class="nav-team"><span class="nav-team-bullet"></span>Team 01</a>
+<a href="W06_2604_Team02.html" class="nav-team"><span class="nav-team-bullet"></span>Team 02</a>
+</div>
+<div class="nav-week-group">
+<a href="W07_2604_Team01.html" class="nav-week nav-week-tbd">Week 07</a>
+<a href="W07_2604_Team01.html" class="nav-team"><span class="nav-team-bullet"></span>Team 01</a>
+<a href="W07_2604_Team02.html" class="nav-team"><span class="nav-team-bullet"></span>Team 02</a>
+</div>
+<div class="nav-week-group">
+<a href="W08_2604_Team01.html" class="nav-week nav-week-tbd">Week 08</a>
+<a href="W08_2604_Team01.html" class="nav-team"><span class="nav-team-bullet"></span>Team 01</a>
+<a href="W08_2604_Team02.html" class="nav-team"><span class="nav-team-bullet"></span>Team 02</a>
+</div>
+<div class="nav-phase-label">Class</div>
+<a href="ClassLeaderboard.html" class="nav-week">Leaderboard</a>
+<div class="sidebar-version">Report.version 4.01</div>
+</nav>
+<main class="content">
+<div class="report-header"><span>MEETING SNAPSHOT - Cycle 2604 - Week 1</span></div>
+<div class="report-subheader">Generated: 04-08-2026 - 01:56</div>
+<div class="report-subheader">Report period: 2026-04-06 to 2026-04-12</div>
+<div class="report-subheader report-subheader-warning">Partial-week snapshot: generated on 2026-04-08 before the scheduled week end of 2026-04-12. Counts may increase before the week closes.</div>
+<h1 style="margin-top:0;">2604_Team01</h1>
+<div style="margin:0 0 1rem 0;font-size:0.9rem;"><a href="W01_2604_Team01.html">V2</a> · <a href="W01_2604_Team01_lms.html">LMS Data</a></div>
+<div class="section"><h2>Members</h2><div class="section-inner">
+<p>(no data)</p>
+</div></div>
+<details class="section section-git section-collapsible" open><summary><h2>GIT — Branch Health (Merge Risk Audit)</h2><span class="section-team-id">2604_Team01</span></summary>
+<div class="section-inner">
+<p style="font-size:0.9rem;color:var(--muted);">USE the GUI in the IDE for fix actions, or View → Terminal. Commands below.</p>
+<p>(no data — run Collect first)</p>
+</div></details>
+<details class="section section-git section-collapsible"><summary><h2>GIT — Forks</h2><span class="section-team-id">2604_Team01</span></summary><div class="section-inner">
+<p style="color:var(--muted);">No forks found (or run Collect to refresh).</p>
+</div></details>
+<details class="section section-trello section-collapsible" open><summary><h2>TRELLO — Activity This Week</h2><span class="section-team-id">2604_Team01</span></summary><div class="section-inner">
+<p>(no data — run Collect first)</p>
+</div></details>
+<details class="section section-discord section-collapsible" open><summary><h2>DISCORD — Standup Posts This Week</h2><span class="section-team-id">2604_Team01</span></summary><div class="section-inner">
+<p>(no data — run Collect first)</p>
+</div></details>
+<div class="section"><h2>ISSUES / ALERTS</h2><div class="section-inner">
+<p>No issues this week.</p>
+</div></div>
+
+<div style="text-align:right;font-size:0.7rem;color:var(--muted);margin-top:1.5rem;">v1.1.28</div>
+</main></div></body></html>

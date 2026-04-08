@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Meeting Snapshots — Cycle 2604</title>
+  <title>2604_Team01 — Welcome</title>
   <style>
-    :root{--bg:#f6f8fa;--text:#1f2328;--accent:#0969da;}
+    :root{--bg:#f6f8fa;--text:#1f2328;--accent:#0969da;--muted:#656d76;--card:#fff;--border:#d0d7de;}
     body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;margin:0;padding:0;background:var(--bg);color:var(--text);line-height:1.5;}
     .app{display:flex;min-height:100vh;}
     .sidebar{position:fixed;left:0;top:0;width:172px;height:100vh;overflow-y:auto;background:#141c28;color:#fff;padding:0.75rem 0;border-right:1px solid rgba(255,255,255,0.06);}
@@ -28,13 +28,17 @@
     .nav-week{display:block;font-weight:600;font-size:0.98rem;margin-top:0.2rem;padding:0.28rem 0.9rem;}
     .nav-team{display:flex;align-items:center;padding:0.14rem 0.9rem 0.14rem 1.15rem;font-size:0.62rem;}
     .nav-team-bullet{display:inline-block;width:6px;height:6px;border-radius:50%;background:#f97316;margin-right:0.5rem;flex-shrink:0;}
-    .content{flex:1;margin-left:172px;padding:1.5rem;max-width:900px;}
-    .panel{background:#fff;border:1px solid #d0d7de;border-radius:10px;padding:1rem 1.25rem;}
-    h1{border-bottom:1px solid #ddd;padding-bottom:0.3em;}
-    ul{list-style:none;padding:0;}
-    li{margin:0.75rem 0;}
-    a{color:#0969da;text-decoration:none;}
-    a:hover{text-decoration:underline;}
+    .content{flex:1;margin-left:172px;padding:1.5rem;max-width:980px;}
+    .hero,.panel{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1rem 1.25rem;margin-bottom:1rem;}
+    h1,h2{margin-top:0;}
+    .quick-links{display:flex;flex-wrap:wrap;gap:0.75rem;margin:0.75rem 0 0;}
+    .quick-links a{color:var(--accent);text-decoration:none;font-weight:600;}
+    .quick-links a:hover{text-decoration:underline;}
+    .members{padding-left:1.1rem;}
+    .member-meta{color:var(--muted);font-size:0.88rem;font-weight:400;}
+    .readme-block{margin:0;white-space:pre-wrap;background:#0f1419;color:#e6edf3;padding:1rem;border-radius:8px;overflow:auto;}
+    .empty-note{color:var(--muted);}
+    .page-version{margin-top:1rem;color:var(--muted);font-size:0.8rem;text-align:right;}
   </style>
 </head>
 <body>
@@ -92,18 +96,26 @@
 <div class="sidebar-version">Report.version 4.01</div>
 </nav>
 <main class="content">
+  <section class="hero">
+    <h1>2604_Team01</h1>
+    <p>Team welcome page for Cycle 2604. Use the weekly links in the sidebar for status snapshots, or use the quick links below for project resources.</p>
+    <div class="quick-links">
+      <a href="https://github.com/Cos229-239/2604_Team01">GitHub Repo</a>
+      <span class="empty-note">No Trello board link found.</span>
+      <a href="index.html">Cycle Home</a>
+    </div>
+  </section>
   <section class="panel">
-    <h1>Cycle 2604</h1>
-    <p>Cycle 2604 currently has <strong>2</strong> teams published to GitHub Pages.</p>
-    <p><strong>Live Pages:</strong></p>
-    <ul>
-      <li><a href="https://cos229-239.github.io/2604_Team01/" target="_blank" rel="noopener noreferrer">Live Team 01</a></li><li><a href="https://cos229-239.github.io/2604_Team02/" target="_blank" rel="noopener noreferrer">Live Team 02</a></li>
-    </ul>
-    <p>Select a team info page below, or use the weekly navigation in the sidebar.</p>
-    <ul>
-      <li><a href="Team01.html">Team 01</a></li><li><a href="Team02.html">Team 02</a></li>
+    <h2>Team Members</h2>
+    <ul class="members">
+      <li>No roster data found.</li>
     </ul>
   </section>
+  <section class="panel">
+    <h2>About the Project - GitHub README</h2>
+    <p class="empty-note">No README exists - consider putting one at the project root.</p>
+  </section>
+  <div class="page-version">v1.0.8 · Team Welcome</div>
 </main>
 </div>
 </body>
