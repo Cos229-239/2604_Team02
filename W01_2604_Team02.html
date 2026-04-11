@@ -67,6 +67,14 @@
     .v2-header h1 { font-size: 1.35rem; font-weight: 700; margin: 0; }
     .v2-ref { font-size: 0.8rem; color: var(--text-muted); margin: 0.2rem 0 0; }
     .v2-ref a { color: var(--accent); }
+    .team-resource-links { display:flex; flex-wrap:wrap; gap:0.55rem; margin:0.75rem 0 0; }
+    .team-resource-link {
+      display:inline-flex; align-items:center; gap:0.35rem;
+      padding:0.42rem 0.72rem; border-radius:999px;
+      background:rgba(56,139,253,0.14); border:1px solid rgba(56,139,253,0.28);
+      color:var(--text); text-decoration:none; font-size:0.78rem; font-weight:600;
+    }
+    .team-resource-link:hover { background:rgba(56,139,253,0.22); border-color:rgba(56,139,253,0.42); }
     .v2-meta-block { margin-top: 0.55rem; display: grid; gap: 0.12rem; }
     .v2-meta-block .snapshot-line { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text); }
     .v2-meta-block .meta-line { font-size: 0.8rem; color: var(--text-muted); }
@@ -457,6 +465,7 @@
         <p class="phase-kicker" id="v2-phase-kicker" hidden></p>
         <h1 id="v2-header-title">— Dashboard V2</h1>
         <p class="v2-ref"><a id="link-v1-page" href="#">V1</a> · <a id="link-lms-table" href="#">LMS Data</a></p>
+        <div class="team-resource-links" id="v2-team-links" hidden></div>
         <div class="v2-meta-block">
           <div class="snapshot-line" id="v2-snapshot-line">SNAPSHOT - Cycle - Week</div>
           <div class="meta-line" id="v2-generated-line">Generated: --</div>
@@ -808,7 +817,7 @@
   </script>
 
   <script>
-    const data = {"report": {"generated": "04-11-2026 - 15:19", "period": "April 06 2026 - April 12 2026", "cycle": "2604", "week": 1, "team": "2604_Team02", "sourceUrl": "W01_2604_Team02_v1.html", "assignmentTitle": "PNP2 \u2014 Week 01 Assignment Checks", "assignmentSpec": {"title": "PNP2 \u2014 Week 01 Assignment Checks", "items": [{"assignment": "1.1 Course Setup: Discord", "what": "Join the course Discord and complete the required intro/setup presence.", "criteria": "Be present in the course Discord and complete the required intro/setup steps."}, {"assignment": "1.2 GitHub Desktop", "what": "Get access to the project repo and establish a working Git setup.", "criteria": "Have access to the project repository and a working local Git setup."}]}}, "members": [{"name": "Christopher C.", "git": null, "trello": false, "discord": false, "githubUsername": ""}, {"name": "Alex M.", "git": null, "trello": false, "discord": false, "githubUsername": "", "pnp2Setup": {"name": "Alex Magalhaes", "introPosted": true, "introSource": "Roster welcome message", "githubConnected": true, "githubId": "Alexmjr02", "githubEmail": "alexmjr2002@gmail.com", "trelloConnected": true, "trelloEmail": "awmagalhaes@student.fullsail.edu", "trelloUsername": "", "trelloMemberId": "", "trelloDisplayName": "", "aliases": ["Alex Magalhaes", "Alex M.", "gaetrox"]}}, {"name": "James P.", "git": null, "trello": false, "discord": false, "githubUsername": "", "pnp2Setup": {"name": "James Phillips", "introPosted": true, "introSource": "Roster welcome message", "githubConnected": true, "githubId": "Jimmy4400987", "githubEmail": "jamesphilly03@gmail.com", "trelloConnected": true, "trelloEmail": "JDPhillips4@student.fullsail.edu", "trelloUsername": "jdphillips4", "trelloMemberId": "69d479f14a7b89dd6f1f00e7", "trelloDisplayName": "James Phillips", "aliases": ["James Phillips", "James P.", "jdphillips4", "Kage4200"]}}], "branchHealth": [], "filesTouched": [], "trello": {"assignments": {}, "actions": {}, "actionBreakdown": {}, "tasksTouched": {}, "taskActivity": {}, "status": "HEALTHY"}, "discord": [], "alerts": [{"type": "warn", "text": "Christopher C. has no GIT activity this week ."}, {"type": "warn", "text": "Alex M. has no GIT activity this week ."}, {"type": "warn", "text": "James P. has no GIT activity this week ."}]};
+    const data = {"report": {"generated": "04-11-2026 - 16:01", "period": "April 06 2026 - April 12 2026", "cycle": "2604", "week": 1, "team": "2604_Team02", "sourceUrl": "W01_2604_Team02_v1.html", "teamLinks": [{"label": "Trello Board", "url": "https://trello.com/b/1PnD9Pkf/2604team02"}, {"label": "Discord General", "url": "https://discord.com/channels/689561908574945375/1490928315085881454"}, {"label": "Discord Standups", "url": "https://discord.com/channels/689561908574945375/1490928318676205598"}], "assignmentTitle": "PNP2 \u2014 Week 01 Assignment Checks", "assignmentSpec": {"title": "PNP2 \u2014 Week 01 Assignment Checks", "items": [{"assignment": "1.1 Course Setup: Discord", "what": "Join the course Discord and complete the required intro/setup presence.", "criteria": "Be present in the course Discord and complete the required intro/setup steps."}, {"assignment": "1.2 GitHub Desktop", "what": "Get access to the project repo and establish a working Git setup.", "criteria": "Have access to the project repository and a working local Git setup."}]}}, "members": [{"name": "Christopher C.", "git": null, "trello": false, "discord": false, "githubUsername": ""}, {"name": "Alex M.", "git": null, "trello": false, "discord": false, "githubUsername": "", "pnp2Setup": {"name": "Alex Magalhaes", "introPosted": true, "introSource": "Roster welcome message", "githubConnected": true, "githubId": "Alexmjr02", "githubEmail": "alexmjr2002@gmail.com", "trelloConnected": true, "trelloEmail": "awmagalhaes@student.fullsail.edu", "trelloUsername": "", "trelloMemberId": "", "trelloDisplayName": "", "aliases": ["Alex Magalhaes", "Alex M.", "gaetrox"]}}, {"name": "James P.", "git": null, "trello": false, "discord": false, "githubUsername": "", "pnp2Setup": {"name": "James Phillips", "introPosted": true, "introSource": "Roster welcome message", "githubConnected": true, "githubId": "Jimmy4400987", "githubEmail": "jamesphilly03@gmail.com", "trelloConnected": true, "trelloEmail": "JDPhillips4@student.fullsail.edu", "trelloUsername": "jdphillips4", "trelloMemberId": "69d479f14a7b89dd6f1f00e7", "trelloDisplayName": "James Phillips", "aliases": ["James Phillips", "James P.", "jdphillips4", "Kage4200"]}}, {"name": "Ryan L.", "git": null, "trello": false, "discord": false, "githubUsername": "", "pnp2Setup": {"name": "Ryan Lowrance", "introPosted": true, "introSource": "Roster welcome message", "githubConnected": true, "githubId": "ryanl08", "githubEmail": "rjlowrance@student.fullsail.edu", "trelloConnected": true, "trelloEmail": "rjlowrance@student.fullsail.edu", "trelloUsername": "", "trelloMemberId": "", "trelloDisplayName": "", "aliases": ["Ryan Lowrance", "Ryan L.", "ryan_lowrance_66616", "Ryan 6."]}}], "branchHealth": [], "filesTouched": [], "trello": {"assignments": {}, "actions": {}, "actionBreakdown": {}, "tasksTouched": {}, "taskActivity": {}, "status": "HEALTHY"}, "discord": [], "alerts": [{"type": "warn", "text": "Christopher C. has no GIT activity this week ."}, {"type": "warn", "text": "Alex M. has no GIT activity this week ."}, {"type": "warn", "text": "James P. has no GIT activity this week ."}, {"type": "warn", "text": "Ryan L. has no GIT activity this week ."}]};
     try { sessionStorage.setItem('snapshotData', JSON.stringify(data)); } catch (e) {}
 
     function escapeHtml(value) {
@@ -818,6 +827,12 @@
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
+    }
+
+    function safeUrl(value) {
+      var url = String(value || '').trim();
+      if (!url || /^javascript:/i.test(url)) return '';
+      return url;
     }
 
     (function setupHeaderLinks() {
@@ -855,6 +870,18 @@
         if (periodEl) {
           periodEl.textContent = 'Report period: ' + (periodText || '--');
         }
+      }
+      var teamLinksEl = document.getElementById('v2-team-links');
+      var teamLinks = (data.report && Array.isArray(data.report.teamLinks)) ? data.report.teamLinks : [];
+      if (teamLinksEl) {
+        var linkMarkup = teamLinks.map(function(item) {
+          var label = escapeHtml((item && item.label) || '');
+          var href = safeUrl(item && item.url);
+          if (!label || !href) return '';
+          return '<a class="team-resource-link" href="' + escapeHtml(href) + '" target="_blank" rel="noreferrer noopener">' + label + '</a>';
+        }).filter(Boolean).join('');
+        teamLinksEl.innerHTML = linkMarkup;
+        teamLinksEl.hidden = !linkMarkup;
       }
       var assignmentBriefEl = document.getElementById('v2-assignment-brief');
       var assignmentBriefListEl = document.getElementById('v2-assignment-brief-list');
