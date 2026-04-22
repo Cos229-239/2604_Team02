@@ -13,3 +13,4 @@ Prototype pages:
 ## Team Members
 - Christopher Catoruiz
 - James Phillips
+- Ryan Lowrance 
