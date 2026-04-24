@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "name": "Strike",
+        "type": "Attack",
+        "cost": 1,
+        "description": "Deal 6 damage."
+    },
+    {
+        "id": 2,
+        "name": "Defend",
+        "type": "Skill",
+        "cost": 1,
+        "description": "Gain 5 Block."
+    }
+]
