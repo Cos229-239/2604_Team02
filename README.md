@@ -2,6 +2,9 @@
 
 Start here. Keep this README updated with your team name, members, and a short plan.
 
+    
+    
+
 Prototype pages:
 
 - `index.html` - roster editor prototype landing page
@@ -9,3 +12,5 @@ Prototype pages:
 
 ## Team Members
 - Christopher Catoruiz
+- James Phillips
+- Ryan Lowrance 
