@@ -11,7 +11,9 @@
   },
   "branches": {
     "main": false,
-    "gh-pages": false
+    "gh-pages": false,
+    "dev": true,
+    "PatrickPersonal": false
   },
   "version": 1
 }
