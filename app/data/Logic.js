@@ -1,10 +1,9 @@
 import Card from "../src/components/Card"
-function card(){
+
+function See(){
     Card;
 }
-function See(){
-    card;
-}
+
 function click(){
     if(true){
         See;
@@ -12,14 +11,16 @@ function click(){
         return 0;
     };
 }
-function MoveTo(){
-    return 0;
+function MoveTo(location){
+    return location;
 }
-function moveCard(){
-    MoveTo("card_holder");
+function moveCard(MoveTo){
+    if(MoveTo==true){
+        MoveTo;
+    }
 }
 function CardMovement(){
     if(click=true){
-        moveCard();
+        moveCard(cardHolder);
     };
 }
