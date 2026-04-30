@@ -134,13 +134,6 @@
     },
     {
         "id": 20,
-        "name": "Inflame",
-        "type": "Power",
-        "cost": 1,
-        "description": "Gain 2 Strength."
-    },
-    {
-        "id": 21,
         "name": "Limit Break",
         "type": "Skill",
         "cost": 1,
@@ -194,13 +187,6 @@
         "type": "Skill",
         "cost": 1,
         "description": "Reveal the top card of your draw pile. If it's an Attack, gain Strength equal to its cost until end of turn."
-    },
-    {
-        "id": 29,
-        "name": "True Grit",
-        "type": "Skill",
-        "cost": 1,
-        "description": "Gain 7 Block. Exhaust a card."
     },
     {
         "id": 30,
