@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - "**"
+  schedule:
+    - cron: "0 21 * * *"
   workflow_dispatch:
     inputs:
       mode:
@@ -54,6 +56,7 @@ jobs:
           import os
           import urllib.request
           from datetime import datetime, timezone
+          from zoneinfo import ZoneInfo
 
           webhook = os.environ.get("DISCORD_WEBHOOK", "").strip()
           if not webhook:
@@ -181,13 +184,58 @@ jobs:
           notify_enabled = bool(notify_config.get("enabled", True))
           include = notify_config.get("include", {}) if isinstance(notify_config.get("include", {}), dict) else {}
           branch_policy = notify_config.get("branches", {}) if isinstance(notify_config.get("branches", {}), dict) else {}
+          def resolved_title_flag(key_new: str) -> bool:
+              if key_new in include:
+                  return bool(include[key_new])
+              if "title" in include:
+                  return bool(include["title"])
+              return True
+
+          include_title_team = resolved_title_flag("title_team")
+          include_title_action = resolved_title_flag("title_action")
+          include_description = bool(include.get("description", True))
           include_branch_name = bool(include.get("branch_name", True))
           include_status = bool(include.get("status", True))
           include_ahead_behind = bool(include.get("ahead_behind", True))
           include_files_changed = bool(include.get("files_changed", True))
           include_commit_message = bool(include.get("commit_message", True))
           include_actor = bool(include.get("actor", True))
-          include_timestamp = bool(include.get("timestamp", True))
+          def incl_ts_field(key_prim: str) -> bool:
+              if key_prim in include:
+                  return bool(include[key_prim])
+              granular_stored = ("timestamp_date" in include) or ("timestamp_time" in include)
+              if not granular_stored:
+                  return bool(include.get("timestamp", True))
+              return False
+
+          include_timestamp_date = incl_ts_field("timestamp_date")
+          include_timestamp_time = incl_ts_field("timestamp_time")
+
+          def incl_ts_label(key_lab: str) -> bool:
+              if key_lab in include:
+                  return bool(include[key_lab])
+              return True
+
+          include_timestamp_date_label = incl_ts_label("timestamp_date_label")
+          include_timestamp_time_label = incl_ts_label("timestamp_time_label")
+          include_repo = bool(include.get("repo", True))
+          include_push_size = bool(include.get("push_size", True))
+          include_commit_author = bool(include.get("commit_author", True))
+          include_footer_timestamp = bool(include.get("footer_timestamp", True))
+          def part_on(key: str, fallback: str, default: bool = True) -> bool:
+              if key in include:
+                  return bool(include[key])
+              if fallback:
+                  return bool(include.get(fallback, default))
+              return default
+
+          def infer_cycle_label(repo_name: str) -> str:
+              text = str(repo_name or "").strip()
+              if "_" in text:
+                  prefix = text.split("_", 1)[0].strip()
+                  if len(prefix) == 4 and prefix.isdigit():
+                      return prefix
+              return ""
 
           def branch_notifications_enabled(branch_name: str) -> bool:
               name = str(branch_name or "").strip()
@@ -198,6 +246,55 @@ jobs:
               if name in ("main", "gh-pages"):
                   return False
               return True
+
+          def scheduled_status_branches() -> list[str]:
+              rows = []
+              seen = set()
+              for name, enabled in list(branch_policy.items()):
+                  branch_name = str(name or "").strip()
+                  if not branch_name or not enabled:
+                      continue
+                  if branch_name in ("main", "gh-pages", "dev"):
+                      continue
+                  lowered = branch_name.lower()
+                  if lowered in seen:
+                      continue
+                  seen.add(lowered)
+                  rows.append(branch_name)
+              return sorted(rows, key=lambda item: item.lower())
+
+          def state_icon(state_name: str) -> str:
+              state = str(state_name or "").strip().lower()
+              if state == "diverged":
+                  return "⚠️"
+              if state == "behind":
+                  return "🔻"
+              if state == "ahead":
+                  return "🔹"
+              if state == "in sync":
+                  return "✅"
+              return "•"
+
+          def build_branch_status_embed(repo_label: str, cycle_label: str, summary_text: str, rows: list[str], headline: str = "") -> dict:
+              repo_text = str(repo_label or "repo").strip() or "repo"
+              cycle_text = str(cycle_label or "cycle").strip() or "cycle"
+              display_rows = [str(row or "").rstrip() for row in list(rows or []) if str(row or "").strip()]
+              description_lines = [
+                  f"**Cycle**  {cycle_text}",
+                  f"**Repo**  {repo_text}",
+                  "",
+                  "**Branches vs dev**",
+                  *(display_rows or ["No tracked branches configured."]),
+              ]
+              return {
+                  "title": headline or "Branch VS Dev Update",
+                  "description": "\n".join(description_lines),
+                  "color": 5814783,
+                  "fields": [
+                      {"name": "Summary", "value": summary_text or "No branch summary provided.", "inline": False},
+                  ],
+                  "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+              }
 
           if event_name == "workflow_dispatch" and input_mode == "test":
               test_repo = input_repo_label or repo or "repo"
@@ -223,20 +320,37 @@ jobs:
               status_repo = input_repo_label or repo or "repo"
               status_cycle = input_cycle or "cycle"
               summary_text = input_summary or "No branch summary provided."
-              details_text = input_details or "No branch details provided."
+              details_rows = [line for line in (input_details or "").splitlines() if line.strip()]
               payload = {
                   "embeds": [
-                      {
-                          "title": input_headline or f"{status_repo} branch status",
-                          "description": details_text,
-                          "color": 5814783,
-                          "fields": [
-                              {"name": "Repo", "value": status_repo, "inline": True},
-                              {"name": "Cycle", "value": status_cycle, "inline": True},
-                              {"name": "Summary", "value": summary_text, "inline": False},
-                          ],
-                          "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-                      }
+                      build_branch_status_embed(status_repo, status_cycle, summary_text, details_rows, input_headline or "Branch VS Dev Update")
+                  ]
+              }
+          elif event_name == "schedule":
+              if not notify_enabled:
+                  raise SystemExit(0)
+              status_repo = input_repo_label or repo or "repo"
+              status_cycle = input_cycle or infer_cycle_label(status_repo) or "cycle"
+              tracked = scheduled_status_branches()
+              if not tracked:
+                  raise SystemExit(0)
+              rows = []
+              counts = {"Diverged": 0, "Behind": 0, "Ahead": 0, "In Sync": 0, "Unknown": 0}
+              for branch_name in tracked:
+                  compare = fetch_branch_compare(repo, "dev", branch_name)
+                  state_name = str(compare.get("state") or "Unknown").strip() or "Unknown"
+                  counts[state_name] = counts.get(state_name, 0) + 1
+                  ahead_behind = str(compare.get("ahead_behind") or "—").strip() or "—"
+                  rows.append(f"{state_icon(state_name)} **{branch_name}** — {state_name} ({ahead_behind})")
+              summary_text = (
+                  f"{counts.get('Diverged', 0)} diverged · "
+                  f"{counts.get('Behind', 0)} behind · "
+                  f"{counts.get('Ahead', 0)} ahead · "
+                  f"{counts.get('In Sync', 0)} in sync"
+              )
+              payload = {
+                  "embeds": [
+                      build_branch_status_embed(status_repo, status_cycle, summary_text, rows[:20], "Branch VS Dev Update")
                   ]
               }
           else:
@@ -248,7 +362,33 @@ jobs:
               compare_url = (event.get("compare") or "").strip() or f"{server}/{repo}/commits/{branch}"
               head = event.get("head_commit") or {}
               timestamp = (head.get("timestamp") or datetime.now(timezone.utc).isoformat()).replace("+00:00", "Z")
-              short_when = timestamp.replace("T", " ").replace("Z", " UTC") if timestamp else "Unknown"
+              eastern = ZoneInfo("America/New_York")
+              date_part, time_part = "Unknown", "Unknown"
+
+              def discord_push_et_abbr(local_dt):
+                  off = local_dt.utcoffset()
+                  if off is None:
+                      return "ET"
+                  h = off.total_seconds() / 3600.0
+                  if abs(h + 5) < 0.02:
+                      return "EST"
+                  if abs(h + 4) < 0.02:
+                      return "EDT"
+                  tzname = local_dt.strftime("%Z") or ""
+                  return tzname.strip() or "ET"
+
+              if timestamp:
+                  try:
+                      raw_ts = timestamp.replace("Z", "+00:00")
+                      parsed = datetime.fromisoformat(raw_ts)
+                      if parsed.tzinfo is None:
+                          parsed = parsed.replace(tzinfo=timezone.utc)
+                      local_et = parsed.astimezone(eastern)
+                      tz_abbr = discord_push_et_abbr(local_et)
+                      date_part = local_et.strftime("%m/%d/%Y")
+                      time_part = f"{local_et.strftime('%H:%M:%S')} {tz_abbr}"
+                  except ValueError:
+                      date_part, time_part = "Unknown", "Unknown"
               branch_compare = fetch_branch_compare(repo, "dev", branch)
               files_changed = []
               seen_files = set()
@@ -293,36 +433,103 @@ jobs:
               head_author = str((head.get("author") or {}).get("name") or actor).strip() or actor
               commit_total = len(commits)
               push_size = f"{commit_total} commit{'s' if commit_total != 1 else ''}"
-              commit_message = f"`{head_sha}` {head_message}" if head_sha and head_message else (head_message or (f"`{head_sha}`" if head_sha else "No commit message"))
+              cm_hash_on = part_on("p_hash2", "commit_message")
+              cm_rest_on = part_on("b_cm_rest", "commit_message")
+              commit_message = " ".join(
+                  part for part in (
+                      f"`{head_sha}`" if cm_hash_on and head_sha else "",
+                      head_message if cm_rest_on and head_message else "",
+                  ) if part
+              ).strip() or "No commit message"
 
-              description = "\n".join(lines) if lines else "A new push was received."
-              payload = {
-                  "embeds": [
-                      {
-                          "title": f"{repo} · push on {branch}",
-                          "url": compare_url,
-                          "description": description,
-                          "color": 5814783,
-                          "fields": [
-                              *([{"name": "Actor", "value": actor or "Unknown", "inline": True}] if include_actor else []),
-                              *([{"name": "Branch Name", "value": branch or "Unknown", "inline": True}] if include_branch_name else []),
-                              *([{"name": "Timestamp", "value": short_when, "inline": True}] if include_timestamp else []),
-                              *([{"name": "Status", "value": str(branch_compare.get("state", "Unknown") or "Unknown"), "inline": True}] if include_status else []),
-                              *([{"name": "Ahead / Behind", "value": str(branch_compare.get("ahead_behind", "—") or "—"), "inline": True}] if include_ahead_behind else []),
-                              {"name": "Repo", "value": repo or "Unknown", "inline": True},
-                              {"name": "Push Size", "value": push_size, "inline": True},
-                              *([{"name": "Commit Message", "value": commit_message, "inline": False}] if include_commit_message else []),
-                              {"name": "Commit Author", "value": head_author or "Unknown", "inline": True},
-                              *([{
-                                  "name": "Files changed",
-                                  "value": "\n".join(file_lines),
-                                  "inline": False,
-                              }] if file_lines and include_files_changed else []),
-                          ],
-                          "timestamp": timestamp,
-                      }
-                  ]
-              }
+              if lines:
+                  description = "\n".join(lines)
+              else:
+                  desc_hash_on = part_on("p_hash1", "description")
+                  desc_rest_on = part_on("p_sumrest", "description")
+                  if desc_hash_on and head_sha and commit_url.startswith("http"):
+                      head_part = f"[`{head_sha}`]({commit_url})"
+                  elif desc_hash_on and head_sha:
+                      head_part = f"`{head_sha}`"
+                  else:
+                      head_part = ""
+                  tail_part = f"{head_message} — {head_author}".strip(" —") if desc_rest_on else ""
+                  description = " ".join(part for part in (head_part, tail_part) if part).strip() or "A new push was received."
+              embed_object = {"color": 5814783}
+              if include_title_team and include_title_action:
+                  embed_object["title"] = f"{repo} · Push on {branch}"
+                  embed_object["url"] = compare_url
+              elif include_title_team:
+                  embed_object["title"] = repo
+                  embed_object["url"] = compare_url
+              elif include_title_action:
+                  embed_object["title"] = f"Push on {branch}"
+                  embed_object["url"] = compare_url
+              if include_description:
+                  embed_object["description"] = description
+              zw = "\u200b"
+              embed_fields = []
+              unlabeled_value_lines = []
+              def flush_unlabeled_value_lines() -> None:
+                  nonlocal unlabeled_value_lines
+                  if not unlabeled_value_lines:
+                      return
+                  embed_fields.append({"name": zw, "value": "\n".join(unlabeled_value_lines), "inline": False})
+                  unlabeled_value_lines = []
+              def append_field(label_key: str, value_key: str, fallback: str, label_text: str, value_text: str, inline: bool) -> None:
+                  show_label = part_on(label_key, fallback)
+                  show_value = part_on(value_key, fallback)
+                  if not show_label and not show_value:
+                      return
+                  if show_value and not show_label:
+                      unlabeled_value_lines.append(str(value_text or "").strip() or zw)
+                      return
+                  flush_unlabeled_value_lines()
+                  embed_fields.append({
+                      "name": label_text if show_label else zw,
+                      "value": (str(value_text or "").strip() or zw) if show_value else zw,
+                      "inline": bool(inline and show_label and show_value),
+                  })
+
+              append_field("g_actor_k", "g_actor_v", "actor", "Actor", actor or "Unknown", True)
+              if include_timestamp_date:
+                  if include_timestamp_date_label:
+                      flush_unlabeled_value_lines()
+                      embed_fields.append(
+                          {
+                              "name": "Date",
+                              "value": date_part,
+                              "inline": True,
+                          }
+                      )
+                  else:
+                      unlabeled_value_lines.append(date_part)
+              if include_timestamp_time:
+                  if include_timestamp_time_label:
+                      flush_unlabeled_value_lines()
+                      embed_fields.append(
+                          {
+                              "name": "Time",
+                              "value": time_part,
+                              "inline": True,
+                          }
+                      )
+                  else:
+                      unlabeled_value_lines.append(time_part)
+              append_field("g_branch_k", "g_branch_v", "branch_name", "Branch Name", branch or "Unknown", True)
+              append_field("g_status_k", "g_status_v", "status", "Status", str(branch_compare.get("state", "Unknown") or "Unknown"), True)
+              append_field("g_ab_k", "g_ab_v", "ahead_behind", "Ahead / Behind", str(branch_compare.get("ahead_behind", "—") or "—"), True)
+              append_field("g_repo_k", "g_repo_v", "repo", "Repo", repo or "Unknown", True)
+              append_field("b_ps_k", "b_ps_v", "push_size", "Push Size", push_size, True)
+              append_field("b_cm_k", "b_cm_rest" if cm_rest_on else "p_hash2", "commit_message", "Commit Message", commit_message, False)
+              append_field("b_ca_k", "b_ca_v", "commit_author", "Commit Author", head_author or "Unknown", True)
+              if file_lines and (part_on("b_fc_k", "files_changed") or part_on("b_fc_v", "files_changed")):
+                  append_field("b_fc_k", "b_fc_v", "files_changed", "Files changed", "\n".join(file_lines), False)
+              flush_unlabeled_value_lines()
+              embed_object["fields"] = embed_fields
+              if include_footer_timestamp:
+                  embed_object["timestamp"] = timestamp
+              payload = {"embeds": [embed_object]}
 
           req = urllib.request.Request(
               webhook,
