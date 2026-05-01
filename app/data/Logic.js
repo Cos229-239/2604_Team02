@@ -1,26 +1,24 @@
-import Card from "../src/components/Card"
+import { useState } from "react";
 
-function See(){
-    Card;
-}
+export default function ClickMove() {
+  const [pos, setPos] = useState({ x: 50, y: 50 });
 
-function click(){
-    if(true){
-        See;
-    }else{
-        return 0;
-    };
-}
-function MoveTo(location){
-    return location;
-}
-function moveCard(MoveTo){
-    if(MoveTo==true){
-        MoveTo;
-    }
-}
-function CardMovement(){
-    if(click=true){
-        moveCard(cardHolder);
-    };
+  const handleClick = (e) => {
+    const rect = e.target.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    setPos({ x, y });
+  };
+
+  return (
+    <div className="game-area" onClick={handleClick}>
+      <div
+        className="player"
+        style={{
+          left: pos.x + "px",
+          top: pos.y + "px"
+        }}
+      />
+    </div>
+  );
 }
