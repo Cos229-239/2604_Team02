@@ -1,28 +1,11 @@
 import cards from "../data/cards2.json";
-
-function Cards2() {
-  const sortedCards = [...cards].sort((a, b) => {
-    const costA = a.cost ?? 999;
-    const costB = b.cost ?? 999;
-
-    return costA - costB;
-  });
-
+import SortCards from "../data/card-sorter";
+export default function Cards2() {
   return (
-    <div>
-      <h2>Cards2 Test List</h2>
-
-      {sortedCards.map((card) => (
-        <div key={card.id}>
-          <h3>{card.name}</h3>
-          <p>Cost: {card.cost}</p>
-          <p>Type: {card.type}</p>
-          <p>Rarity: {card.rarity}</p>
-          <p>Color: {card.color}</p>
-        </div>
-      ))}
+    <div style={{ padding: "20px" }}>
+      <h1>Card Sorter</h1>
+      <p>Sort cards by different attributes</p>
+      <SortCards cards={cards} />
     </div>
   );
 }
-
-export default Cards2;
