@@ -1,10 +1,18 @@
-//health ui
+//health ui, potions
 import React, { useState } from 'react';
 
 export default function App(){
   const maxHP = 80;
   const [hp, setHp] = useState(80);
+  const [potions, setPotions] = useState(3);
   const [input, setInput] = useState('80');
+
+  const healPotion = () => {
+    if (potions <= 0) return;
+    const healed = Math.min(hp + 20, maxHP);
+    setHp(healed);
+    setPotions(potions - 1);
+  };
 
   const updateHealth = () => {
     let value = parseInt(input || '0', 10);
@@ -34,7 +42,19 @@ export default function App(){
         >
           Update Health
         </button>
+
+        <div className="mt-5 rounded-xl border border-emerald-500 bg-neutral-900 p-4 text-white">
+          <div className="text-lg font-bold text-emerald-300">Health Potions: {potions}</div>
+          <div className="text-sm text-neutral-300 mt-1">Each potion restores 20 HP</div>
+          <button
+            onClick={healPotion}
+            className="mt-3 w-full rounded-xl bg-emerald-600 hover:bg-emerald-500 p-3 font-bold text-white"
+          >
+            Use Potion
+          </button>
+        </div>
       </div>
     </div>
   )
 }
+
