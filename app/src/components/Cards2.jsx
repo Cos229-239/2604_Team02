@@ -1,6 +1,8 @@
 import cards from "../data/cards2.json";
 import SortCards from "../data/card-sorter";
 export default function Cards2() {
+  
+  
   return (
     <div style={{ padding: "20px" }}>
       <h1>Card Sorter</h1>
@@ -8,4 +10,6 @@ export default function Cards2() {
       <SortCards cards={cards} />
     </div>
   );
+
+
 }

@@ -1,7 +1,6 @@
 import cards from "./data/cards2.json";
 import Card from "./components/Card2";
 
-
 function App() {
   return (
     <div style={{ padding: "20px" }}>
