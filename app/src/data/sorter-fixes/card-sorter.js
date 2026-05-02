@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 export default function SortCards({ cards }) {
-  const [sortedCards, setSortedCards] = useState([]);
+  const [sortedCards, setSortedCards] = useState([  ]);
 
   // Sort once when the page loads
   useEffect(() => {
@@ -17,15 +17,11 @@ export default function SortCards({ cards }) {
     setSortedCards([...sortedCards].sort((a, b) => a.name.localeCompare(b.name)));
   };
 
-  const sortByType = () => {
-    setSortedCards([...sortedCards].sort((a, b) => a.type.localeCompare(b.type)));
-  };
 
   return (
     <div>
       <button onClick={sortByCost}>Sort by Cost</button>
       <button onClick={sortByName}>Sort by Name</button>
-      <button onClick={sortByType}>Sort by Type</button>
 
       <div style={{ marginTop: '16px' }}>
         {sortedCards.map((card) => (

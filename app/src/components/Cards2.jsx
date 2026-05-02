@@ -1,8 +1,8 @@
 import cards from "../data/cards2.json";
-import SortCards from "../data/card-sorter";
+import SortCards from "../data/sorter-fixes/card-sorter";
 export default function Cards2() {
   
-  
+
   return (
     <div style={{ padding: "20px" }}>
       <h1>Card Sorter</h1>

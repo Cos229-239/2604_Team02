@@ -1,5 +1,5 @@
 import cards from "./data/cards2.json";
-import Card from "./components/Card2";
+import Card from "./components/Cards2";
 
 function App() {
   return (
