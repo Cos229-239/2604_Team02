@@ -1,18 +1,27 @@
-import cards from "./data/cards2.json";
-import Card from "./components/Cards2";
+import "./App.css";
+
+import Cards2 from "./components/Cards2";
+import Monsters from "./components/Monsters";
 
 function App() {
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Spire Architect</h1>
-      <p>Slay the Spire Companion App</p>
+    <div className="app-container">
+      <header className="app-header">
+        <h1>Spire Architect</h1>
+        <p>Slay the Spire Companion App</p>
+      </header>
 
-      
-      <h2>All Cards</h2>
-      {cards.map((card) => (
-        <Card key={card.id} card={card} />
-      ))}
+      <section>
+        <Cards2 />
+      </section>
 
+      <section>
+        <h2>All Monsters</h2>
+
+        <div className="monster-grid">
+          <Monsters />
+        </div>
+      </section>
     </div>
   );
 }
