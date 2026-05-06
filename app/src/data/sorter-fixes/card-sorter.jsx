@@ -16,7 +16,22 @@ export default function SortCards({ cards }) {
   const sortByName = () => {
     setSortedCards([...sortedCards].sort((a, b) => a.name.localeCompare(b.name)));
   };
+  
+  return (
+    <div>
+      <button onClick={sortByCost}>Sort by Cost</button>
+      <button onClick={sortByName}>Sort by Name</button>
 
+      <div className="card-grid">
+        {sortedCards.map((card) => (
+          <div key={card.id} className="card">
+            <h3>{card.name}</h3>
+            <p>Cost: {card.cost}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 
   
 }
