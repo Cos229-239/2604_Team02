@@ -17,10 +17,7 @@ function App() {
 
       <section>
         <h2>All Monsters</h2>
-
-        <div className="monster-grid">
           <Monsters />
-        </div>
       </section>
     </div>
   );

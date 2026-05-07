@@ -74,3 +74,30 @@ section h2 {
 .enemy-card strong {
   color: #ffffff;
 }
+
+
+
+.monster-controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.monster-controls input,
+.monster-controls select {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background-color: #2b2b33;
+  color: #f2f2f2;
+}
+
+.monster-controls input {
+  min-width: 240px;
+}
+
+.monster-count {
+  margin-bottom: 16px;
+  color: #c9c9c9;
+}

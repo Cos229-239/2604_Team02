@@ -1,9 +1,55 @@
+
+import { useState } from "react";
+
 import monsters from "../data/monsters.json";
 
 function Monsters() {
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const [selectedType, setSelectedType] = useState("All");
+
+  const filteredMonsters = monsters.filter((monster) => {
+    const matchesSearch = monster.name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+
+    const matchesType = selectedType === "All" || monster.type === selectedType;
+
+    return matchesSearch && matchesType;
+  });
+
   return (
-    <>
-      {monsters.map((monster) => (
+  <>
+    {/* Controls section for searching and filtering monsters */}
+    <div className="monster-controls">
+      {/* Every time the user types, update searchTerm with the new input value. */}
+      <input
+        type="text"
+        placeholder="Search monsters..."
+        value={searchTerm}
+        onChange={(event) => setSearchTerm(event.target.value)}
+      />
+
+      {/* Every time the user changes the dropdown, update selectedType. */}
+      <select
+        value={selectedType}
+        onChange={(event) => setSelectedType(event.target.value)}
+      >
+        <option value="All">All Types</option>
+        <option value="Normal">Normal</option>
+        <option value="Elite">Elite</option>
+        <option value="Boss">Boss</option>
+      </select>
+    </div>
+
+    {/* Shows the user how many monsters are currently visible */}
+    <p className="monster-count">
+      Showing {filteredMonsters.length} of {monsters.length} monsters
+    </p>
+
+    <div className="monster-grid">
+      {filteredMonsters.map((monster) => (
         <div className="enemy-card" key={monster.id}>
           <h3>{monster.name}</h3>
 
@@ -92,8 +138,8 @@ function Monsters() {
           )}
         </div>
       ))}
-    </>
-  );
-}
+    </div>
+  </>
+)};
 
 export default Monsters;
