@@ -1,11 +1,20 @@
-//health ui, potions
+//health ui, potions, energy
 import React, { useState } from 'react';
 
 export default function App(){
   const maxHP = 80;
   const [hp, setHp] = useState(80);
   const [potions, setPotions] = useState(3);
+  const [energy, setEnergy] = useState(3);
   const [input, setInput] = useState('80');
+
+  const gainEnergy = () => {
+    setEnergy(Math.min(energy + 1, 10));
+  };
+
+  const useEnergy = () => {
+    setEnergy(Math.max(energy - 1, 0));
+  };
 
   const healPotion = () => {
     if (potions <= 0) return;
@@ -29,6 +38,34 @@ export default function App(){
         <div className="mx-auto h-40 w-40 rounded-full border-4 border-yellow-400 bg-radial-[at_30%_30%] from-red-400 via-red-600 to-red-900 flex items-center justify-center shadow-lg">
           <span className="text-white text-3xl font-bold">{hp} / {maxHP}</span>
         </div>
+        <div className="mt-6 rounded-xl border border-cyan-500 bg-neutral-900 p-4 text-white">
+          <div className="text-lg font-bold text-cyan-300">Energy: {energy}</div>
+          <div className="flex gap-2 justify-center mt-3">
+            {Array.from({ length: energy }).map((_, index) => (
+              <div
+                key={index}
+                className="h-6 w-6 rounded-full bg-cyan-400 shadow-lg"
+              />
+            ))}
+          </div>
+
+          <div className="flex gap-3 mt-4">
+            <button
+              onClick={gainEnergy}
+              className="flex-1 rounded-xl bg-cyan-600 hover:bg-cyan-500 p-2 font-bold text-white"
+            >
+              Gain Energy
+            </button>
+
+            <button
+              onClick={useEnergy}
+              className="flex-1 rounded-xl bg-slate-700 hover:bg-slate-600 p-2 font-bold text-white"
+            >
+              Use Energy
+            </button>
+          </div>
+        </div>
+
         <input
           type="number"
           value={input}
@@ -57,4 +94,3 @@ export default function App(){
     </div>
   )
 }
-
