@@ -1155,6 +1155,7 @@
       ],
       "description": "Swoop → Peck → repeat"
     },
+"notes": "May gain Strength during its attack cycle. Verify exact timing before finalizing.",
     "image_url": "/static/images/monsters/byrdonis.webp",
     "beta_image_url": null
   },

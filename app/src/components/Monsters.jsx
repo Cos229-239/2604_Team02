@@ -79,6 +79,12 @@ function Monsters() {
             </p>
           )}
 
+          {monster.notes && (
+            <p>
+              <strong>Notes:</strong> {monster.notes}
+            </p>
+          )}
+
           <h4>Moves</h4>
 
           {monster.moves && monster.moves.length > 0 ? (
