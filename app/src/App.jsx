@@ -1,29 +1,34 @@
-import "./App.css";
-
-import Cards2 from "./components/Cards2";
-import Monsters from "./components/Monsters";
+import { useState } from "react";
+import cards from "./data/cards2.json";
+import Card from "./components/Cards2";
+import RewardChooser from "./components/Run";
 
 function App() {
+  const [page, setPage] = useState("home");
   return (
-    <div className="app-container">
-      <header className="app-header">
-        <h1>Spire Architect</h1>
-        <p>Slay the Spire Companion App</p>
-      </header>
+    <div style={{ padding: "20px" }}>
+      <h1>Spire Architect</h1>
+      <p>Slay the Spire Companion App</p>
 
-      <section>
-        <Cards2 />
-      </section>
-
-      <section>
-        <div className="monsters-section">
-          <h1>Monsters</h1>
-          <p>Information about monsters in the game</p>
-          <Monsters />
-        </div>
-      </section>
-
-      
+      <button onClick={() => setPage("Home")}
+      style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px" }}>
+  Home
+</button>
+      <button onClick={() => setPage("Run")}
+      style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px" }}>
+  Current Run
+</button>
+ {page === "Home" && (
+  <>
+      <h2>All Cards</h2>
+      {cards.map((card) => (
+        <Card key={card.id} card={card} />
+      ))}
+</>
+ )}
+  {page === "Run" && (
+      <RewardChooser />
+    )}
     </div>
   );
 }
