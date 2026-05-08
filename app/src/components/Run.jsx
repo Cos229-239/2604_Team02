@@ -5,6 +5,7 @@ export default function RewardChooser() {
   const[view, setView] = useState("Run");
   const [deck, setDeck] = useState([]);
   const [choices, setChoices] = useState([]);
+  const [character, setCharacter] = useState("");
 
   const cardGroups = {
     Attack: [],
@@ -22,17 +23,57 @@ export default function RewardChooser() {
   return (
     <div>
       <h2>Current Run</h2>
+      {character && <h3>Character: {character}</h3>}
+      {character && (
+        <button
+        onClick={()=> {
+          setCharacter("")
+          setDeck([])
+          setChoices([])
+          setView("Run")
+        }}
+        style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
+          Reset Run
+        </button>
+      )}
 {view === "Run" && (
   <>
+  
+   {character !== "" &&(
+      <>
+      <button
+      onClick={()=> setView("Remove Cards")}
+      style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
+        Remove Card From Deck
+
+      </button>
   <button onClick={() =>setView("Card Rewards")}
   style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
     Choose Card Reward
   </button>
+</>
+    )}
+    {character === "" && (
+      <>
+      <h3>Select Your Character</h3>
+
+      {["Ironclad","Silent","Defect","Necrobinder","Regent"].map(char => (
+        <button
+        key={char}
+        onClick={()=>setCharacter(char)}
+        style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
+        {char}
+        </button>
+      ))}
+</>
+)}
+{character !== "" &&(
+  <>
       <h3>Build Your Deck</h3>
       {["Attack","Skill","Power","Curse"].map(type =>(
         <div key={type}>
       <h4>{type}</h4>
-      {cardGroups[type].slice(0,5).map(card => (
+      {cardGroups[type].map(card => (
         <button key={card.id} 
         onClick={() => setDeck([...deck, card])}
         style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
@@ -50,7 +91,10 @@ export default function RewardChooser() {
       ))}
     </>
       )}
+  </>
+    )}
 
+   
       {view === "Card Rewards" &&(<>
       <button onClick={()=>setView("Run")}
         style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
@@ -64,13 +108,13 @@ export default function RewardChooser() {
         style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
         Reset Choices 
         </button>
-      
+
 
       <h3>Select the 3 cards</h3>
       {["Attack","Skill","Power","Curse"].map(type =>(
       <div key={type}>
       <h4>{type}</h4>
-      {cardGroups[type].slice(0,5).map(card => (
+      {cardGroups[type].map(card => (
         <button key={card.id} 
         onClick={() => {
           if (choices.length <3){
@@ -86,6 +130,37 @@ export default function RewardChooser() {
  
 
 </>)}
+
+{view == "Remove Cards" && (
+<>
+ <button onClick={()=>setView("Run")}
+        style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
+        Back to Run
+        </button>
+
+        <h3>Remove Cards</h3>
+
+        {deck.map((card,index)=>(
+          <button
+          key = {index}
+          onClick={()=>{
+            const newDeck = [...deck];
+            newDeck.splice(index,1);
+            setDeck(newDeck);
+          }}
+          style = {{
+            color:"black", backgroundColor:"#867e7e",marginRight: "10px"
+          }}
+          >
+            Remove {card.name}
+          </button>
+        ))
+
+        }
+</>
+
+)}
     </div>
+  
   )
 }
