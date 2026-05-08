@@ -84,6 +84,13 @@ export default function RewardChooser() {
       />
         </div>
       ))}
+
+      <h3>Current Deck:</h3>
+      {deck.map((card,index)=>(
+        <div key={index}>{card.name}</div>
+        
+      ))}
+      
       
       <p>Deck size: {deck.length}</p>
 
