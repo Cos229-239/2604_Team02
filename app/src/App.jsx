@@ -16,9 +16,14 @@ function App() {
       </section>
 
       <section>
-        <h2>All Monsters</h2>
+        <div className="monsters-section">
+          <h1>Monsters</h1>
+          <p>Information about monsters in the game</p>
           <Monsters />
+        </div>
       </section>
+
+      
     </div>
   );
 }
