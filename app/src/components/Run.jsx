@@ -1,11 +1,13 @@
 import { useState } from "react";
 import cards from "../data/cards2.json";
+import SortCards from "../data/sorter-fixes/card-sorter";
 
 export default function RewardChooser() {
   const[view, setView] = useState("Run");
   const [deck, setDeck] = useState([]);
   const [choices, setChoices] = useState([]);
   const [character, setCharacter] = useState("");
+  const [sortedCards, setSortedCards] = useState(cards);
 
   const cardGroups = {
     Attack: [],
@@ -13,6 +15,8 @@ export default function RewardChooser() {
     Power: [],
     Curse: [],
   }
+  
+
 
   cards.forEach(card=> {
     if (cardGroups[card.type]){
@@ -21,6 +25,7 @@ export default function RewardChooser() {
   });
 
   return (
+    
     <div>
       <h2>Current Run</h2>
       {character && <h3>Character: {character}</h3>}
@@ -73,13 +78,10 @@ export default function RewardChooser() {
       {["Attack","Skill","Power","Curse"].map(type =>(
         <div key={type}>
       <h4>{type}</h4>
-      {cardGroups[type].map(card => (
-        <button key={card.id} 
-        onClick={() => setDeck([...deck, card])}
-        style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
-          {card.name}
-        </button>
-      ))}
+      <SortCards
+         cards={cardGroups[type]}
+         onSelect={(card) => setDeck([...deck, card])}
+      />
         </div>
       ))}
       
@@ -114,17 +116,14 @@ export default function RewardChooser() {
       {["Attack","Skill","Power","Curse"].map(type =>(
       <div key={type}>
       <h4>{type}</h4>
-      {cardGroups[type].map(card => (
-        <button key={card.id} 
-        onClick={() => {
-          if (choices.length <3){
-            setChoices([...choices,card]);
+      <SortCards
+        cards={cardGroups[type]}
+        onSelect={(card) => {
+          if (choices.length < 3) {
+            setChoices([...choices, card]);
           }
         }}
-        style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
-          {card.name}
-        </button>
-      ))}
+      />
         </div>
       ))}
  

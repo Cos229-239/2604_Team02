@@ -24,7 +24,12 @@ export default function SortCards({ cards }) {
 
       <div className="card-grid">
         {sortedCards.map((card) => (
-          <div key={card.id} className="card">
+          <div
+            key={card.id}
+            className="card"
+            onClick={() => onSelect && onSelect(card)}
+            style={{ cursor: "pointer" }}
+          >
             <h3>{card.name}</h3>
             <p>Cost: {card.cost}</p>
             <p>Type: {card.type}</p>
@@ -33,13 +38,11 @@ export default function SortCards({ cards }) {
             <p>Block: {card.block}</p>
             <p>Magic: {card.magic}</p>
             <p>Description: {card.description}</p>
-            
-            
           </div>
         ))}
       </div>
     </div>
   );
+}
 
   
-}

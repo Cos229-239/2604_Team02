@@ -4,7 +4,11 @@ import Card from "./components/Cards2";
 import RewardChooser from "./components/Run";
 
 function App() {
+  
+  
   const [page, setPage] = useState("home");
+  
+
   return (
     <div style={{ padding: "20px" }}>
       <h1>Spire Architect</h1>
