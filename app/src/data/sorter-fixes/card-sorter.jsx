@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function SortCards({ cards }) {
+export default function SortCards({ cards, onSelect}) {
   const [sortedCards, setSortedCards] = useState([  ]);
 
   // Sort once when the page loads
@@ -19,8 +19,10 @@ export default function SortCards({ cards }) {
   
   return (
     <div>
-      <button onClick={sortByCost}>Sort by Cost</button>
-      <button onClick={sortByName}>Sort by Name</button>
+      <button onClick={sortByCost} style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
+      Sort by Cost</button>
+      <button onClick={sortByName} style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
+      Sort by Name</button>
 
       <div className="card-grid">
         {sortedCards.map((card) => (
