@@ -27,6 +27,14 @@ export default function SortCards({ cards }) {
           <div key={card.id} className="card">
             <h3>{card.name}</h3>
             <p>Cost: {card.cost}</p>
+            <p>Type: {card.type}</p>
+            <p>Rarity: {card.rarity}</p>
+            <p>Damage: {card.damage}</p>
+            <p>Block: {card.block}</p>
+            <p>Magic: {card.magic}</p>
+            <p>Description: {card.description}</p>
+            
+            
           </div>
         ))}
       </div>

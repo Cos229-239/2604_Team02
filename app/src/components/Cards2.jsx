@@ -3,6 +3,8 @@ import SortCards from "../data/sorter-fixes/card-sorter";
 
 
 export default function Cards2() {
+
+  // Assuming the JSON structure has a "cards" array
   
 
   return (
