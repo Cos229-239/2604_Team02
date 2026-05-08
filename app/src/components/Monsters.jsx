@@ -146,6 +146,7 @@ function Monsters() {
       ))}
     </div>
   </>
-)};
+);
+}
 
 export default Monsters;

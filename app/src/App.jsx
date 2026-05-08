@@ -1,12 +1,14 @@
 import { useState } from "react";
-import cards from "./data/cards2.json";
-import Card from "./components/Cards2";
+import "./App.css";
+
+import Cards2 from "./components/Cards2";
 import RewardChooser from "./components/Run";
+import Monsters from "./components/Monsters";
 
 function App() {
   
   
-  const [page, setPage] = useState("home");
+  const [page, setPage] = useState("Home");
   
 
   return (
@@ -22,16 +24,24 @@ function App() {
       style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px" }}>
   Current Run
 </button>
- {page === "Home" && (
-  <>
-      <h2>All Cards</h2>
-      {cards.map((card) => (
-        <Card key={card.id} card={card} />
-      ))}
-</>
- )}
+      <button onClick={() => setPage("EnemyPatterns")}
+      style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px" }}>
+  Enemy Patterns
+</button>
+{page === "Home" && (
+        <>
+          <h2>All Cards</h2>
+          <Cards2 />
+        </>
+      )}
   {page === "Run" && (
       <RewardChooser />
+    )}
+    {page === "EnemyPatterns" && (
+      <>
+      <h2>Enemy Attack Patterns</h2>
+      <Monsters />
+      </>
     )}
     </div>
   );
