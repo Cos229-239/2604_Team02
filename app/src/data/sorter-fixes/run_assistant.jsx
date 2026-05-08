@@ -1,7 +1,7 @@
 //health ui, potions, energy
 import React, { useState } from 'react';
 
-export default function App(){
+export default function Assistant(){
   const maxHP = 80;
   const [hp, setHp] = useState(80);
   const [potions, setPotions] = useState(3);

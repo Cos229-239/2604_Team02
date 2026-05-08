@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import cards from "./cards2.json";
 import SortCards from "./sorter-fixes/card-sorter";
 import RewardChooser from "../components/Run";
@@ -12,6 +12,10 @@ import potions from "../components/data/potions.json";
 import intents from "../components/data/intents.json";
 import powers from "../components/data/powers.json";
 import keywords from "../components/data/keywords.json";
+import assistant from "../components/data/assistant.json";
+import resets from "../components/data/resets.json";
+import Statistics from "./statistics";
+
 
 
 
@@ -31,6 +35,10 @@ export default function Logic() {
   const [intentList, setIntents] = useState(intents);
   const [powerList, setPowers] = useState(powers);
   const [keywordList, setKeywords] = useState(keywords);
+  const [assistantData, setAssistantData] = useState(assistant);
+  const [resetData, setResetData] = useState(resets);
+  const [statsView, setStatsView] = useState("Run");
+
 
   const cardGroups = {
     Attack: [],
@@ -276,12 +284,59 @@ export default function Logic() {
         {choices.some(card => card.name.includes("Power")) && <li>Consider picking cards that synergize with Powers.</li>}
         {choices.some(card => card.rarity === "Rare") && <li>Consider picking other Rare cards for powerful combos.</li>}
       </ul>
-      
-
-        
+      <h2>Statistics</h2>
+      <Statistics deck={deck} choices={choices} />
+      <h2>Assistant</h2>
+      <div className="assistant-container">
+        <div className="assistant-response">
+          <p>{assistantData.response}</p>
+        </div>
+        <div className="assistant-input">
+          <input
+            type="text"
+            value={assistantData.input}
+            onChange={(e) => setAssistantData({ ...assistantData, input: e.target.value })}
+            placeholder="Ask the assistant..."
+            className="assistant-input-field"
+          />
+          <button
+            onClick={() => {
+              // Simulate assistant response based on input
+              let response = "I'm not sure how to respond to that.";
+              if (assistantData.input.toLowerCase().includes("suggest a card")) {
+                response = "Based on your current deck, I suggest adding more Defend cards to complement your Strikes.";
+              }
+              setAssistantData({ ...assistantData, response });
+            }}
+            className="assistant-input-button"
+          >
+            Ask
+          </button>
+        </div>
       </div>
-
-    
+      <h2>Reset Data</h2>
+      <button
+        onClick={() => {  
+          setDeck([]);
+          setChoices([]);
+          setCharacter("");
+          setSortedCards(cards);
+          setMonsters(Monster);
+          setRelics(Relic);
+          setCharacters(Character);
+          setEnhancements(enhancements);
+          setEncounters(encounters);
+          setAfflictions(afflictions);
+          setPotions(potions);
+          setIntents(intents);
+          setPowers(powers);
+          setKeywords(keywords);
+          setAssistantData(assistant);
+        }}
+        style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px" }}
+      >
+        Reset All Data
+      </button>
+    </div>
   );
-
 }
