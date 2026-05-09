@@ -28,6 +28,7 @@ function App() {
       style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px" }}>
   Enemy Patterns
 </button>
+      
 {page === "Home" && (
         <>
           <h2>All Cards</h2>

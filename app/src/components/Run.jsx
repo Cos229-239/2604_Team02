@@ -1,6 +1,58 @@
 import { useState } from "react";
 import cards from "../data/cards2.json";
 import SortCards from "../data/sorter-fixes/card-sorter";
+function SavedRunView({ slot, loadRun, goBack }) {
+  const data = localStorage.getItem(slot);
+
+  if (!data) {
+    return (
+      <div>
+        <h2>No saved run in this slot.</h2>
+        <button
+          onClick={goBack}
+          style={{ color: "black", backgroundColor: "#ddd", marginTop: "10px" }}
+        >
+          Back
+        </button>
+      </div>
+    );
+  }
+
+  const saved = JSON.parse(data);
+
+  return (
+    <div>
+      <h2>Saved Run ({slot})</h2>
+
+      <h3>Character: {saved.character}</h3>
+
+      <h3>Deck:</h3>
+      {saved.deck.map((card, index) => (
+        <div key={index}>{card.name}</div>
+      ))}
+
+      <h3>Choices:</h3>
+      {saved.choices.map((card, index) => (
+        <div key={index}>{card.name}</div>
+      ))}
+
+      <button
+        onClick={() => loadRun(saved)}
+        style={{ color: "black", backgroundColor: "#ddd", marginTop: "10px", marginRight: "10px" }}
+      >
+        Load This Run
+      </button>
+
+      <button
+        onClick={goBack}
+        style={{ color: "black", backgroundColor: "#ddd", marginTop: "10px" }}
+      >
+        Back
+      </button>
+    </div>
+  );
+}
+
 
 export default function RewardChooser() {
   const[view, setView] = useState("Run");
@@ -15,7 +67,13 @@ export default function RewardChooser() {
     Power: [],
     Curse: [],
   }
-  
+  const loadRun = (saved) => {
+  setCharacter(saved.character);
+  setDeck(saved.deck);
+  setChoices(saved.choices);
+  setView("Run");
+};
+
 
 
   cards.forEach(card=> {
@@ -27,6 +85,62 @@ export default function RewardChooser() {
   return (
     
     <div>
+      <h3>Save Current Run</h3>
+
+<button
+  onClick={() => {
+    const runData = { character, deck, choices };
+    localStorage.setItem("savedRun1", JSON.stringify(runData));
+    alert("Saved to Slot 1!");
+  }}
+  style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px" }}
+>
+  Save Slot 1
+</button>
+
+<button
+  onClick={() => {
+    const runData = { character, deck, choices };
+    localStorage.setItem("savedRun2", JSON.stringify(runData));
+    alert("Saved to Slot 2!");
+  }}
+  style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px" }}
+>
+  Save Slot 2
+</button>
+
+<button
+  onClick={() => {
+    const runData = { character, deck, choices };
+    localStorage.setItem("savedRun3", JSON.stringify(runData));
+    alert("Saved to Slot 3!");
+  }}
+  style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px" }}
+>
+  Save Slot 3
+</button>
+<button
+  onClick={() => setView("Load Slot 1")}
+  style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px" }}
+>
+  Load Slot 1
+</button>
+
+<button
+  onClick={() => setView("Load Slot 2")}
+  style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px" }}
+>
+  Load Slot 2
+</button>
+
+<button
+  onClick={() => setView("Load Slot 3")}
+  style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px" }}
+>
+  Load Slot 3
+</button>
+
+
       <h2>Current Run</h2>
       {character && <h3>Character: {character}</h3>}
       {character && (
@@ -74,6 +188,22 @@ export default function RewardChooser() {
 )}
 {character !== "" &&(
   <>
+      <h3>Save Current Run</h3>
+
+<button
+  onClick={() => {
+    const runData = {
+      character,
+      deck,
+      choices
+    };
+    localStorage.setItem("savedRun", JSON.stringify(runData));
+    alert("Run saved!");
+  }}
+  style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px" }}
+>
+  Save Current Run
+</button> 
       <h3>Build Your Deck</h3>
       {["Attack","Skill","Power","Curse"].map(type =>(
         <div key={type}>
@@ -164,7 +294,64 @@ export default function RewardChooser() {
 
         }
 </>
+)}
+{view === "Saved Run" && (
+  <div>
+    <h2>Saved Run</h2>
 
+    {(() => {
+      const data = localStorage.getItem("savedRun");
+      if (!data) return <p>No saved run found.</p>;
+
+      const saved = JSON.parse(data);
+
+      return (
+        <>
+          <h3>Character: {saved.character}</h3>
+
+          <h3>Deck:</h3>
+          {saved.deck.map((card, index) => (
+            <div key={index}>{card.name}</div>
+          ))}
+
+          <h3>Choices:</h3>
+          {saved.choices.map((card, index) => (
+            <div key={index}>{card.name}</div>
+          ))}
+
+          <button
+            onClick={() => setView("Run")}
+            style={{ color: "black", backgroundColor: "#ddd", marginTop: "10px" }}
+          >
+            Back to Run
+          </button>
+        </>
+      );
+    })()}
+  </div>
+)}
+{view === "Load Slot 1" && (
+  <SavedRunView
+    slot="savedRun1"
+    loadRun={loadRun}
+    goBack={() => setView("Run")}
+  />
+)}
+
+{view === "Load Slot 2" && (
+  <SavedRunView
+    slot="savedRun2"
+    loadRun={loadRun}
+    goBack={() => setView("Run")}
+  />
+)}
+
+{view === "Load Slot 3" && (
+  <SavedRunView
+    slot="savedRun3"
+    loadRun={loadRun}
+    goBack={() => setView("Run")}
+  />
 )}
     </div>
   
