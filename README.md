@@ -77,3 +77,6 @@ Do NOT push directly to main
 Do NOT push broken code to dev
 Always work from your personal branch
 Commit meaningful changes
+#### use if already merged
+- 05/10/2026 if merged already add something here
+- this is added to make sure that everyone can push to dev when they can't merge dev to theres first
