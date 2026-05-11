@@ -142,8 +142,7 @@ export default function RewardChooser() {
 
 
       <h2>Current Run</h2>
-      {character && <h3>Character: {character}</h3>}
-      {character && (
+          {character && (
         <button
         onClick={()=> {
           setCharacter("")
@@ -155,16 +154,20 @@ export default function RewardChooser() {
           Reset Run
         </button>
       )}
+      {character && <h3>Character: {character}</h3>}
+  
 {view === "Run" && (
   <>
   
    {character !== "" &&(
       <>
-      <button
-      onClick={()=> setView("Remove Cards")}
+      <button onClick={() =>setView("Add Cards")}
+  style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
+    Add Cards
+  </button>
+      <button onClick={()=> setView("Remove Cards")}
       style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
         Remove Card From Deck
-
       </button>
   <button onClick={() =>setView("Card Rewards")}
   style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
@@ -203,9 +206,30 @@ export default function RewardChooser() {
   style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px" }}
 >
   Save Current Run
-</button> 
-      <h3>Build Your Deck</h3>
-      {["Attack","Skill","Power","Curse"].map(type =>(
+</button>   
+
+<h3>Current Deck:</h3>
+      {deck.map((card,index)=>(
+        <div key={index}>{card.name}</div>
+
+      ))}
+
+
+      <p>Deck size: {deck.length}</p>
+    </>
+      )}
+  </>
+    )}
+{view === "Add Cards" && (
+<>
+ <button onClick={()=>setView("Run")}
+        style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
+        Back to Run
+        </button>
+
+        <h3>Add Cards</h3>
+
+{["Attack","Skill","Power","Curse"].map(type =>(
         <div key={type}>
       <h4>{type}</h4>
       <SortCards
@@ -214,26 +238,8 @@ export default function RewardChooser() {
       />
         </div>
       ))}
-
-      <h3>Current Deck:</h3>
-      {deck.map((card,index)=>(
-        <div key={index}>{card.name}</div>
-        
-      ))}
-      
-      
-      <p>Deck size: {deck.length}</p>
-
-      <h4> Your Deck:</h4>
-      {deck.map((c,index)=>(
-        <div key = {index}>{c.name}</div>
-      ))}
-    </>
-      )}
-  </>
-    )}
-
-   
+</>
+)}
       {view === "Card Rewards" &&(<>
       <button onClick={()=>setView("Run")}
         style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
