@@ -7394,9 +7394,12 @@
     ],
     "innate_powers": [
       {
-        "power_id": "SKITTISH",
-        "amount": 6,
-        "amount_ascension": 7
+       "id": "SKITTISH",
+    "name": "Skittish",
+    "effect": "unknown",
+    "amount": 6,
+    "amount_ascension": 7,
+    "description": "The first time it is hit each turn, it gains 6 (7) block."
       }
     ],
     "attack_pattern": {
