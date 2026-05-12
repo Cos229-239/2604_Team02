@@ -79,6 +79,20 @@ function Monsters() {
             </p>
           )}
 
+            {monster.innate_powers && monster.innate_powers.length > 0 && (
+            <div className="monster-section">
+              <h4>Innate Powers</h4>
+
+              <ul>
+                {monster.innate_powers.map((power) => (
+                  <li key={power.id}>
+                    <strong>{power.name}:</strong> {power.description}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           {monster.notes && (
             <p>
               <strong>Notes:</strong> {monster.notes}
