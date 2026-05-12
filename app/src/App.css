@@ -101,3 +101,34 @@ section h2 {
   margin-bottom: 16px;
   color: #c9c9c9;
 }
+
+
+.monster-image {
+  width: 100%;
+  max-height: 180px;
+  object-fit: contain;
+  margin-bottom: 1rem;
+}
+
+.moves-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.moves-list > li {
+  list-style: none;
+}
+
+.move-item {
+  margin-bottom: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.move-powers {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 0.5rem;
+}

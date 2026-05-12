@@ -52,6 +52,13 @@ function Monsters() {
       {filteredMonsters.map((monster) => (
         <div className="enemy-card" key={monster.id}>
           <h3>{monster.name}</h3>
+          {monster.image_url && (
+            <img
+              src={monster.image_url}
+              alt={monster.name}
+              className="monster-image"
+            />
+          )}
 
           <p>
             <strong>Type:</strong> {monster.type}
@@ -76,7 +83,29 @@ function Monsters() {
           {monster.attack_pattern && (
             <p>
               <strong>Pattern:</strong> {monster.attack_pattern.description}
+              {monster.attack_pattern?.description || "Pattern data not available yet."}
             </p>
+          )}
+
+            {monster.innate_powers && monster.innate_powers.length > 0 && (
+            <div className="monster-section">
+              <h4>Innate Powers</h4>
+
+              <ul>
+                {monster.innate_powers.map((power) => (
+                  <li key={power.id}>
+                    <strong>{power.name}:</strong> {power.description}
+                      {power.amount !== null && power.amount !== undefined && (
+                      <span> | Amount: {power.amount}</span>
+                    )}
+
+                    {power.amount_ascension !== null && power.amount_ascension !== undefined && (
+                      <span> / Ascension: {power.amount_ascension}</span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
 
           {monster.notes && (
@@ -90,7 +119,7 @@ function Monsters() {
           {monster.moves && monster.moves.length > 0 ? (
             <ul>
               {monster.moves.map((move) => (
-                <li key={move.id}>
+                <li className="move-item" key={move.id}>
                   <strong>{move.name}</strong> — {move.intent}
 
                   {move.damage && (
