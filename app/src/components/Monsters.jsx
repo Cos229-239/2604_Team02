@@ -82,8 +82,8 @@ function Monsters() {
 
           {monster.attack_pattern && (
             <p>
-              <strong>Pattern:</strong> {monster.attack_pattern.description}
-              {monster.attack_pattern?.description || "Pattern data not available yet."}
+              <strong>Pattern:</strong> {" "}
+    {monster.attack_pattern.description || "Pattern data not available yet."}
             </p>
           )}
 
