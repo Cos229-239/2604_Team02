@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+//import { useSelector } from 'react-redux'; commented out for now since we aren't using redux in this component -Chris
 
 
-import Monster from "../components/data/monsters.json";
-import Relic from "../components/data/relics.json";
-import Character from "../components/data/characters.json";
-import enhancements from "../components/data/enhancements.json";
-import encounters from "../components/data/encounters.json";
-import afflictions from "../components/data/afflictions.json";
-import potions from "../components/data/potions.json";
-import intents from "../components/data/intents.json";
-import powers from "../components/data/powers.json";
-import keywords from "../components/data/keywords.json";
-import assistant from "../components/data/assistant.json";
+import monsters from "../monsters.json";
+import Relic from "../relics.json";
+import Character from "../characters.json";
+import enchantments from "../enchantments.json";
+import afflictions from "../afflictions.json";
+import potions from "../potions.json";
+import intents from "../intents.json";
+import powers from "../powers.json";
+import keywords from "../keywords.json";
+//import assistant from "../assistant.json"; unsure what data this is supposed to be, so leaving it out for now -Chris
 
 import Statistics from "./statistics";
 
@@ -44,6 +43,7 @@ export default function DataHelper() {
     };
 
     if (!currentRun) return <p>Loading...</p>;
+    
 
     return (
         <div className="min-h-screen bg-neutral-900 flex items-center justify-center p-6">
