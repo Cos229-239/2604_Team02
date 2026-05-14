@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-import cards from "./cards2.json";
-import SortCards from "./sorter-fixes/card-sorter";
 
 import Monster from "../components/data/monsters.json";
 import Relic from "../components/data/relics.json";
@@ -18,7 +16,7 @@ import assistant from "../components/data/assistant.json";
 
 import Statistics from "./statistics";
 
-export default function Assistant() {
+export default function DataHelper() {
     const reduxCharacter = useSelector((state) => state.character);
 
     const [currentRun, setCurrentRun] = useState(null);

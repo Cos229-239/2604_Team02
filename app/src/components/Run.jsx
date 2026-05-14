@@ -1,6 +1,7 @@
 import { useState } from "react";
 import cards from "../data/cards2.json";
 import SortCards from "../data/sorter-fixes/card-sorter";
+import DataHelper from "../data/sorter-fixes/runDataHelper";
 function SavedRunView({ slot, loadRun, goBack }) {
   const data = localStorage.getItem(slot);
 
@@ -139,7 +140,9 @@ export default function RewardChooser() {
 >
   Load Slot 3
 </button>
-
+      <h2>statistics</h2>
+      <DataHelper />
+    
 
       <h2>Current Run</h2>
       {character && <h3>Character: {character}</h3>}
