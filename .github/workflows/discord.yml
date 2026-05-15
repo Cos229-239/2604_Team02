@@ -43,6 +43,7 @@ jobs:
       - name: Send push embed
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          SUPATEWL_DISCORD_ENABLED: ${{ vars.SUPATEWL_DISCORD_ENABLED }}
           GITHUB_TOKEN: ${{ github.token }}
           WORKFLOW_INPUT_MODE: ${{ github.event.inputs.mode }}
           WORKFLOW_INPUT_HEADLINE: ${{ github.event.inputs.headline }}
@@ -59,6 +60,11 @@ jobs:
           from zoneinfo import ZoneInfo
 
           webhook = os.environ.get("DISCORD_WEBHOOK", "").strip()
+          workflow_enabled_raw = os.environ.get("SUPATEWL_DISCORD_ENABLED", "").strip().lower()
+          workflow_enabled = workflow_enabled_raw not in {"0", "false", "off", "no", "disabled"}
+          if not workflow_enabled:
+              print("SUPATEWL_DISCORD_ENABLED is off; skipping Discord notification.")
+              raise SystemExit(0)
           if not webhook:
               raise SystemExit("DISCORD_WEBHOOK is not set")
 
@@ -471,11 +477,10 @@ jobs:
               embed_fields = []
               unlabeled_value_lines = []
               def flush_unlabeled_value_lines() -> None:
-                  nonlocal unlabeled_value_lines
                   if not unlabeled_value_lines:
                       return
                   embed_fields.append({"name": zw, "value": "\n".join(unlabeled_value_lines), "inline": False})
-                  unlabeled_value_lines = []
+                  unlabeled_value_lines[:] = []
               def append_field(label_key: str, value_key: str, fallback: str, label_text: str, value_text: str, inline: bool) -> None:
                   show_label = part_on(label_key, fallback)
                   show_value = part_on(value_key, fallback)
