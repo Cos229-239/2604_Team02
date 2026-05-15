@@ -1,5 +1,6 @@
 {
   "enabled": true,
+  "nightly_report_kickoff": true,
   "include": {
     "title_team": false,
     "title_action": true,
@@ -51,7 +52,11 @@
   },
   "branches": {
     "main": false,
-    "gh-pages": false
+    "gh-pages": false,
+    "Alex-Personal": true,
+    "ChrisPersonal": true,
+    "Phillips-personal": true,
+    "Ryan-Personal": true
   },
   "version": 1
 }
