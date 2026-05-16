@@ -2,6 +2,69 @@ import { useState } from "react";
 import cards from "../data/cards2.json";
 import SortCards from "../data/sorter-fixes/card-sorter";
 import DataHelper from "../data/sorter-fixes/runDataHelper";
+
+
+// *Starter Deck Helper Functions* -Chris
+
+const getCardsByName = (cardName, amount) => {
+  const card = cards.find((card) => card.name === cardName);
+
+  if (!card) {
+    console.log(`Card not found: ${cardName}`);
+    return [];
+  }
+
+  return Array(amount).fill(card);
+};
+
+const getStarterDeck = (characterName) => {
+  if (characterName === "Ironclad") {
+    return [
+      ...getCardsByName("Strike", 5),
+      ...getCardsByName("Defend", 4),
+      ...getCardsByName("Bash", 1),
+    ];
+  }
+
+  if (characterName === "Silent") {
+    return [
+      ...getCardsByName("Strike", 5),
+      ...getCardsByName("Defend", 5),
+      ...getCardsByName("Survivor", 1),
+      ...getCardsByName("Neutralize", 1),
+    ];
+  }
+
+  if (characterName === "Defect") {
+    return [
+      ...getCardsByName("Strike", 4),
+      ...getCardsByName("Defend", 4),
+      ...getCardsByName("Zap", 1),
+      ...getCardsByName("Dualcast", 1),
+    ];
+  }
+
+  if (characterName === "Necrobinder") {
+    return [
+      ...getCardsByName("Strike", 4),
+      ...getCardsByName("Defend", 4),
+      ...getCardsByName("Bodyguard", 1),
+      ...getCardsByName("Unleash", 1),
+    ];
+  }
+
+  if (characterName === "Regent") {
+    return [
+      ...getCardsByName("Strike", 4),
+      ...getCardsByName("Defend", 4),
+      ...getCardsByName("Falling Star", 1),
+      ...getCardsByName("Venerate", 1),
+    ];
+  }
+
+  return [];
+};
+
 function SavedRunView({ slot, loadRun, goBack }) {
   const data = localStorage.getItem(slot);
 
@@ -187,10 +250,15 @@ export default function RewardChooser() {
       <>
       <h3>Select Your Character</h3>
 
-      {["Ironclad","Silent","Defect","Necrobinder","Regent"].map(char => (
+      {["Ironclad","Silent","Defect","Necrobinder","Regent"].map((char) => (
         <button
         key={char}
-        onClick={()=>setCharacter(char)}
+        onClick={()=>{
+        setCharacter(char);
+        setDeck(getStarterDeck(char));
+        setChoices([]);
+        setView("Run");
+      }}
         style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
         {char}
         </button>
