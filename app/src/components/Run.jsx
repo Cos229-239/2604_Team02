@@ -140,9 +140,17 @@ export default function RewardChooser() {
 >
   Load Slot 3
 </button>
-      <h2>statistics</h2>
-      <DataHelper />
-    
+ {/* If no character is selected, show message to select character -Chris */}
+{character !== "" && (
+  <>
+    <h2>Statistics</h2>
+    <DataHelper
+      character={character}
+      deck={deck}
+      choices={choices}
+    />
+  </>
+)}
 
       <h2>Current Run</h2>
       {character && <h3>Character: {character}</h3>}
