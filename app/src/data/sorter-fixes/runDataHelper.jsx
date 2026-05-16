@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-//import { useSelector } from 'react-redux'; commented out for now since we aren't using redux in this component -Chris
+//import { useSelector } from 'react-redux'; //do not remove this untill absoltly needed -james
 
 
 import monsters from "../monsters.json";
@@ -11,15 +11,40 @@ import potions from "../potions.json";
 import intents from "../intents.json";
 import powers from "../powers.json";
 import keywords from "../keywords.json";
-//import assistant from "../assistant.json"; unsure what data this is supposed to be, so leaving it out for now -Chris
-
+import assistant from "../assistant.json";
+import SortCards from "./card-sorter";
+import cards from "../cards2.json";
 import Statistics from "./statistics";
 
 export default function DataHelper() {
-    const reduxCharacter = useSelector((state) => state.character);
-
+    const [characters, setCharacters] = useState([]);
+    const [monstersData, setMonstersData] = useState([]);
+    const [relics, setRelics] = useState([]);
+    const [enchantmentsData, setEnchantmentsData] = useState([]);
+    const [afflictionsData, setAfflictionsData] = useState([]);
+    const [potionsData, setPotionsData] = useState([]);
+    const [intentsData, setIntentsData] = useState([]);
+    const [powersData, setPowersData] = useState([]);
+    const [keywordsData, setKeywordsData] = useState([]);
     const [currentRun, setCurrentRun] = useState(null);
     const [showStatistics, setShowStatistics] = useState(false);
+    const [showDeck, setShowDeck] = useState(false);
+    const [sortedCards, setSortedCards] = useState([]);
+    const [cardsData, setCardsData] = useState([]);
+    const [view, setView] = useState("Statistics"); // "Run" or "Statistics"
+
+    // Load all data on mount
+    useEffect(() => {
+        setCharacters(Character);
+        setMonstersData(monsters);
+        setRelics(Relic);
+        setEnchantmentsData(enchantments);
+        setAfflictionsData(afflictions);
+        setPotionsData(potions);
+        setIntentsData(intents);
+        setPowersData(powers);
+        setKeywordsData(keywords);
+    }, []);
 
     // Load current run or fallback to assistant.json
     useEffect(() => {

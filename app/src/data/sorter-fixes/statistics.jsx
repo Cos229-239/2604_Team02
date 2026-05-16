@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
-import characters from "../components/data/characters.json";
-import acts from "../components/data/acts.json";
+//import characters from "../components/data/characters.json"; issues with pulling data from here, so leaving it out for now -james
+
+//import acts from "../components/data/acts.json"; issues with pulling data from here, so leaving it out for now -james
+import characters from "../characters.json";
+import acts from "../acts.json";
 
 export default function Statistics() {
     // Extract character IDs from your JSON

@@ -1,0 +1,25 @@
+{
+    "character": "Ironclad",
+    "act": "Act 1",
+    "deck": [],
+
+    "globalStats": {
+        "Ironclad": {
+            "Act 1": { "wins": 0, "losses": 0 },
+            "Act 2": { "wins": 0, "losses": 0 },
+            "Act 3": { "wins": 0, "losses": 0 }
+        },
+        "Silent": {
+            "Act 1": { "wins": 0, "losses": 0 },
+            "Act 2": { "wins": 0, "losses": 0 },
+            "Act 3": { "wins": 0, "losses": 0 }
+        },
+        "Defect": {
+            "Act 1": { "wins": 0, "losses": 0 },
+            "Act 2": { "wins": 0, "losses": 0 },
+            "Act 3": { "wins": 0, "losses": 0 }
+        }
+    },
+
+    "notes": "Default assistant run state with global stats."
+}
