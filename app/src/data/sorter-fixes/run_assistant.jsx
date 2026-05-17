@@ -1,7 +1,7 @@
-//health ui, potions, energy
+//health ui, potions, energy, basic decision rules
 import React, { useState } from 'react';
 
-export default function Assistant(){
+export default function App(){
   const maxHP = 80;
   const [hp, setHp] = useState(80);
   const [potions, setPotions] = useState(3);
@@ -14,6 +14,27 @@ export default function Assistant(){
 
   const useEnergy = () => {
     setEnergy(Math.max(energy - 1, 0));
+  };
+
+  // Basic decision rules (simple game logic)
+  const getRecommendation = () => {
+    if (hp <= 20 && potions > 0) {
+      return 'Low HP: Use a Health Potion';
+    }
+
+    if (energy === 0) {
+      return 'No Energy: End turn or recover energy';
+    }
+
+    if (hp > 50 && energy >= 2) {
+      return 'Healthy: Attack enemy or play a stronger card';
+    }
+
+    if (hp <= 50 && energy >= 1) {
+      return 'Be cautious: Defend or use low-cost actions';
+    }
+
+    return 'Balanced: Choose attack or defense';
   };
 
   const healPotion = () => {
@@ -89,6 +110,12 @@ export default function Assistant(){
           >
             Use Potion
           </button>
+        </div>
+              <div className="mt-5 rounded-xl border border-purple-500 bg-neutral-900 p-4 text-white">
+          <div className="text-lg font-bold text-purple-300">Decision Helper</div>
+          <div className="mt-2 text-sm text-neutral-200">
+            {getRecommendation()}
+          </div>
         </div>
       </div>
     </div>
