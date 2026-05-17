@@ -9,6 +9,8 @@ function Monsters() {
 
   const [selectedType, setSelectedType] = useState("All");
 
+  const [selectedAct, setSelectedAct] = useState("All");
+
   const filteredMonsters = monsters.filter((monster) => {
     const matchesSearch = monster.name
       .toLowerCase()
@@ -16,7 +18,13 @@ function Monsters() {
 
     const matchesType = selectedType === "All" || monster.type === selectedType;
 
-    return matchesSearch && matchesType;
+    const matchesAct =
+      selectedAct === "All" ||
+      monster.encounters?.some(
+        (encounter) => encounter.act === selectedAct
+      );
+
+    return matchesSearch && matchesType && matchesAct;
   });
 
   return (
@@ -41,7 +49,19 @@ function Monsters() {
         <option value="Elite">Elite</option>
         <option value="Boss">Boss</option>
       </select>
-    </div>
+    
+
+      <select
+        value={selectedAct}
+        onChange={(event) => setSelectedAct(event.target.value)}
+      >
+        <option value="All">All Acts</option>
+        <option value="Act 1 - Overgrowth">Act 1 - Overgrowth</option>
+        <option value="Act 1 - Underdocks">Act 1 - Underdocks</option>
+        <option value="Act 2 - Hive">Act 2 - Hive</option>
+        <option value="Act 3 - Glory">Act 3 - Glory</option>
+      </select>
+      </div>
 
     {/* Shows the user how many monsters are currently visible */}
     <p className="monster-count">
