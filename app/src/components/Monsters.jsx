@@ -9,6 +9,8 @@ function Monsters() {
 
   const [selectedType, setSelectedType] = useState("All");
 
+  const [selectedAct, setSelectedAct] = useState("All");
+
   const filteredMonsters = monsters.filter((monster) => {
     const matchesSearch = monster.name
       .toLowerCase()
@@ -16,7 +18,13 @@ function Monsters() {
 
     const matchesType = selectedType === "All" || monster.type === selectedType;
 
-    return matchesSearch && matchesType;
+    const matchesAct =
+      selectedAct === "All" ||
+      monster.encounters?.some(
+        (encounter) => encounter.act === selectedAct
+      );
+
+    return matchesSearch && matchesType && matchesAct;
   });
 
   return (
@@ -41,7 +49,19 @@ function Monsters() {
         <option value="Elite">Elite</option>
         <option value="Boss">Boss</option>
       </select>
-    </div>
+    
+
+      <select
+        value={selectedAct}
+        onChange={(event) => setSelectedAct(event.target.value)}
+      >
+        <option value="All">All Acts</option>
+        <option value="Act 1 - Overgrowth">Act 1 - Overgrowth</option>
+        <option value="Act 1 - Underdocks">Act 1 - Underdocks</option>
+        <option value="Act 2 - Hive">Act 2 - Hive</option>
+        <option value="Act 3 - Glory">Act 3 - Glory</option>
+      </select>
+      </div>
 
     {/* Shows the user how many monsters are currently visible */}
     <p className="monster-count">
@@ -60,32 +80,34 @@ function Monsters() {
             />
           )}
 
-          <p>
-            <strong>Type:</strong> {monster.type}
-          </p>
+      <div className="monster-stats">
+        <div>
+          <span>Type</span>
+          <strong>{monster.type}</strong>
+        </div>
 
-          <p>
-            <strong>HP:</strong> {monster.min_hp}
-            {monster.max_hp ? ` - ${monster.max_hp}` : ""}
-          </p>
+        <div>
+          <span>HP</span>
+          <strong>{monster.min_hp} - {monster.max_hp}</strong>
+        </div>
 
-          <p>
-            <strong>Ascension HP:</strong> {monster.min_hp_ascension}
-            {monster.max_hp_ascension ? ` - ${monster.max_hp_ascension}` : ""}
-          </p>
+        <div>
+          <span>Ascension HP</span>
+          <strong>{monster.min_hp_ascension} - {monster.max_hp_ascension}</strong>
+        </div>
 
-          {monster.encounters && monster.encounters.length > 0 && (
-            <p>
-              <strong>Act:</strong> {monster.encounters[0].act}
-            </p>
-          )}
+        <div>
+          <span>Act</span>
+          <strong>{monster.encounters?.[0]?.act || "Unknown"}</strong>
+        </div>
+      </div>
 
-          {monster.attack_pattern && (
-            <p>
-              <strong>Pattern:</strong> {monster.attack_pattern.description}
-              {monster.attack_pattern?.description || "Pattern data not available yet."}
-            </p>
-          )}
+            {monster.attack_pattern && (
+    <div className="pattern-box">
+      <span className="section-label">Pattern</span>
+      <p>{monster.attack_pattern.description || "Pattern data not available yet."}</p>
+    </div>
+  )}
 
             {monster.innate_powers && monster.innate_powers.length > 0 && (
             <div className="monster-section">
@@ -117,9 +139,9 @@ function Monsters() {
           <h4>Moves</h4>
 
           {monster.moves && monster.moves.length > 0 ? (
-            <ul>
+              <div className="moves-list">
               {monster.moves.map((move) => (
-                <li className="move-item" key={move.id}>
+                <li className="move-card" key={move.id}>
                   <strong>{move.name}</strong> — {move.intent}
 
                   {move.damage && (
@@ -167,10 +189,10 @@ function Monsters() {
                   )}
                 </li>
               ))}
-            </ul>
-          ) : (
-            <p>No move data available.</p>
-          )}
+              </div>
+            ) : (
+              <p>No move data available.</p>
+            )}
         </div>
       ))}
     </div>
