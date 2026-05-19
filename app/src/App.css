@@ -193,3 +193,64 @@ section h2 {
   margin: 0;
   color: #c8d3e3;
 }
+
+
+.reference-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+  gap: 1.5rem;
+  padding: 1.5rem;
+}
+
+.reference-card {
+  background-color: #2b2b36;
+  border: 1px solid #444450;
+  border-radius: 14px;
+  padding: 1.5rem;
+  min-height: 220px;
+  text-align: center;
+}
+
+.reference-card h3 {
+  color: #ffd966;
+  font-size: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.reference-description {
+  color: #b8cce6;
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+.reference-notes {
+  color: #d7e3f4;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.reference-controls {
+  display: flex;
+  gap: 1rem;
+  margin: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.reference-controls input,
+.reference-controls select {
+  background-color: #2b2b36;
+  color: white;
+  border: 1px solid #555560;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+}
+
+.reference-count {
+  color: #b8cce6;
+  font-size: 1.3rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 1.5rem 0;
+}
