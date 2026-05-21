@@ -1,69 +1,11 @@
 import { useState } from "react";
-import cards from "../data/cards2.json";
-import SortCards from "../data/sorter-fixes/card-sorter";
-import DataHelper from "../data/sorter-fixes/runDataHelper";
-
-
-// *Starter Deck Helper Functions* -Chris
-
-const getCardsByName = (cardName, amount) => {
-  const card = cards.find((card) => card.name === cardName);
-
-  if (!card) {
-    console.log(`Card not found: ${cardName}`);
-    return [];
-  }
-
-  return Array(amount).fill(card);
-};
-
-const getStarterDeck = (characterName) => {
-  if (characterName === "Ironclad") {
-    return [
-      ...getCardsByName("Strike", 5),
-      ...getCardsByName("Defend", 4),
-      ...getCardsByName("Bash", 1),
-    ];
-  }
-
-  if (characterName === "Silent") {
-    return [
-      ...getCardsByName("Strike", 5),
-      ...getCardsByName("Defend", 5),
-      ...getCardsByName("Survivor", 1),
-      ...getCardsByName("Neutralize", 1),
-    ];
-  }
-
-  if (characterName === "Defect") {
-    return [
-      ...getCardsByName("Strike", 4),
-      ...getCardsByName("Defend", 4),
-      ...getCardsByName("Zap", 1),
-      ...getCardsByName("Dualcast", 1),
-    ];
-  }
-
-  if (characterName === "Necrobinder") {
-    return [
-      ...getCardsByName("Strike", 4),
-      ...getCardsByName("Defend", 4),
-      ...getCardsByName("Bodyguard", 1),
-      ...getCardsByName("Unleash", 1),
-    ];
-  }
-
-  if (characterName === "Regent") {
-    return [
-      ...getCardsByName("Strike", 4),
-      ...getCardsByName("Defend", 4),
-      ...getCardsByName("Falling Star", 1),
-      ...getCardsByName("Venerate", 1),
-    ];
-  }
-
-  return [];
-};
+import cards from "../../data/cards2.json";
+import SortCards from "../../data/sorter-fixes/card-sorter";
+import DataHelper from "../../data/sorter-fixes/runDataHelper";
+import {getMainArchetype, getRecommendedCard} from "./recommendationSystem";
+import CardRewards from "./CardRewards";
+import {getStarterDeck} from "./starterDeck";
+import CharacterSelect from "./characterSelect";
 
 function SavedRunView({ slot, loadRun, goBack }) {
   const data = localStorage.getItem(slot);
@@ -117,7 +59,6 @@ function SavedRunView({ slot, loadRun, goBack }) {
   );
 }
 
-
 export default function RewardChooser() {
   const[view, setView] = useState("Run");
   const [deck, setDeck] = useState([]);
@@ -125,32 +66,9 @@ export default function RewardChooser() {
   const [character, setCharacter] = useState("");
   const [sortedCards, setSortedCards] = useState(cards);
 
-  const archetypes = {
-  //Ironclad Archetypes
-  strength: 0,
-  exhaust: 0,
-  block: 0,
-  
-  // Silent Archetypes
-  poison: 0,
-  shiv: 0,
-  sly: 0,
+  const mainArchetype = getMainArchetype(deck, character, getStarterDeck);
 
-  //Regent Archetypes
-  starCost: 0,
-  sovereignBlade: 0,
-  createdCards: 0,
-
-  //Necrobinder Archetypes
-  soul: 0,
-  osty: 0,
-  doom: 0,
-
-  //Defect Archetypes
-  orbs: 0,
-  zeroCost: 0,
-  status: 0
-  };
+  const recommendedCard = getRecommendedCard(choices, mainArchetype, character);
 
   const cardGroups = {
     Attack: [],
@@ -165,90 +83,13 @@ export default function RewardChooser() {
   setView("Run");
 };
 
-
-
   cards.forEach(card=> {
     if (cardGroups[card.type]){
       cardGroups[card.type].push(card);
     }
   });
 
-deck.forEach((card) => {
-  const text = (card.description + " " + card.name).toLowerCase();
-if(character==="Ironclad"){
-  if (text.includes("strength")){
-    archetypes.strength += 1;
-  }
-   if (text.includes("exhaust")){
-    archetypes.exhaust += 1;
-  }
-    if (text.includes("block")){
-    archetypes.block += 1;
-  }
-}
-if(character==="Silent"){
-   if (text.includes("poison")){
-    archetypes.poison += 1;
-  }
-    if (text.includes("shiv")){
-    archetypes.shiv += 1;
-  }
-   if (text.includes("sly")||
-  text.includes("discard")){
-    archetypes.sly += 1;
-  }
-}
-if(character==="Necrobinder"){
-   if (text.includes("soul")){
-    archetypes.soul += 1;
-  }
-   if (text.includes("osty")){
-    archetypes.osty += 1;
-  }
-   if (text.includes("doom")){
-    archetypes.doom += 1;
-  }
-}
-if(character==="Regent"){
-  if (card.star_cost !== null){
-    archetypes.starCost += 1;
-  }
-  if (text.includes("sovereign blade")){
-    archetypes.sovereignBlade += 1;
-  }
-  if (text.includes("create")||
-  text.includes("created")){
-    archetypes.createdCards += 1;
-  }
-}
-if(character==="Defect"){
-     if (text.includes("orb") || 
-    text.includes("channel")){
-    archetypes.orbs += 1;
-  }
-   if (card.cost === 0){
-    archetypes.zeroCost += 1;
-  }
-    if (text.includes("status") ||
-    text.includes("burn") ||
-    text.includes("dazed") ||
-    text.includes("wound") ||
-    text.includes("void")
-  ){
-    archetypes.status += 1;
-  }
-}
-})
-  
- let mainArchetype = "";
- let highestValue = 0;
 
- for (const type in archetypes){
-  if (archetypes[type]>highestValue){
-    highestValue = archetypes[type];
-    mainArchetype = type;
-  }
- }
   return (
     
     <div>
@@ -352,25 +193,12 @@ if(character==="Defect"){
   </button>
 </>
     )}
-    {character === "" && (
-      <>
-      <h3>Select Your Character</h3>
-
-      {["Ironclad","Silent","Defect","Necrobinder","Regent"].map((char) => (
-        <button
-        key={char}
-        onClick={()=>{
-        setCharacter(char);
-        setDeck(getStarterDeck(char));
-        setChoices([]);
-        setView("Run");
-      }}
-        style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
-        {char}
-        </button>
-      ))}
-</>
-)}
+{character === "" && (<CharacterSelect setCharacter = {setCharacter}
+setDeck={setDeck}
+setChoices ={setChoices}
+setView={setView}
+getStarterDeck={getStarterDeck}
+/>)}
 {character !== "" &&(
   <>
       <h3>Save Current Run</h3>
@@ -403,6 +231,19 @@ if(character==="Defect"){
       )}
   </>
     )}
+{view === "Card Rewards" && ( 
+  <CardRewards
+  choices={choices}
+  setChoices={setChoices}
+    deck={deck}
+    setDeck={setDeck}
+    cardGroups={cardGroups}
+    setView={setView}
+    mainArchetype={mainArchetype}
+    recommendedCard={recommendedCard}
+  />
+)}
+
 {view === "Add Cards" && (
 <>
  <button onClick={()=>setView("Run")}
@@ -423,38 +264,7 @@ if(character==="Defect"){
       ))}
 </>
 )}
-      {view === "Card Rewards" &&(<>
-      <button onClick={()=>setView("Run")}
-        style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
-        Back to Run
-        </button>
-      <h3>Selected Cards:</h3>
-      {choices.map((c,index)=>(
-      <div key={index}>{c.name}</div>
-      ))}
-      <button onClick={()=>setChoices([])}
-        style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
-        Reset Choices 
-        </button>
-
-
-      <h3>Select the 3 cards</h3>
-      {["Attack","Skill","Power","Curse"].map(type =>(
-      <div key={type}>
-      <h4>{type}</h4>
-      <SortCards
-        cards={cardGroups[type]}
-        onSelect={(card) => {
-          if (choices.length < 3) {
-            setChoices([...choices, card]);
-          }
-        }}
-      />
-        </div>
-      ))}
- 
-
-</>)}
+    
 
 {view === "Remove Cards" && (
 <>
