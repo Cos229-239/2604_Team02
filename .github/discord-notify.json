@@ -1,5 +1,5 @@
 {
-  "enabled": false,
+  "enabled": true,
   "nightly_report_kickoff": false,
   "include": {
     "title_team": false,
@@ -51,8 +51,28 @@
     "p_footer": true
   },
   "branches": {
-    "main": true,
-    "gh-pages": true,
+    "main": false,
+    "gh-pages": false,
+    "Alex-Personal": true,
+    "ChrisPersonal": true,
+    "dev": true,
+    "PatrickPersonal": false,
+    "Phillips-personal": true,
+    "Ryan-Personal": true
+  },
+  "nightly_branches": {
+    "main": false,
+    "gh-pages": false,
+    "Alex-Personal": false,
+    "ChrisPersonal": false,
+    "dev": false,
+    "PatrickPersonal": false,
+    "Phillips-personal": false,
+    "Ryan-Personal": false
+  },
+  "weekly_branches": {
+    "main": false,
+    "gh-pages": false,
     "Alex-Personal": true,
     "ChrisPersonal": true,
     "dev": true,
