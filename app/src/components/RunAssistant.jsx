@@ -1,7 +1,7 @@
 //health ui, potions, energy, basic decision rules
 import { useState } from 'react';
 
-function RunAssistant(){
+function RunAssistant({character, selectedAct}) {
     /*
     maxHp is currently hardcoded for now.
 
@@ -24,7 +24,7 @@ function RunAssistant(){
 
 
   // Basic decision rules (simple game logic)
-  const getRecommendation = () => {
+  const getRunRecommendation = () => {
     if (currentHp <= 20 && potions > 0) {
       return 'Low HP: Consider enemy intent and using a Potion to preserve HP';
     }
@@ -42,6 +42,33 @@ function RunAssistant(){
     }
 
     return 'Balanced: Consider enemy intent before deciding';
+  };
+
+  /*
+  Run advice based on selected Act.
+  */
+  const getRunAdvice = () => {
+    if (!character) {
+      return "Select a character to get started.";
+    }
+
+    if (!selectedAct) {
+      return "Choose your current act to receive tailored advice.";
+    }
+
+    if (selectedAct === "Act 1") {
+      return `${character} In Act 1, Frontloaded damage and early defense are key. Prioritize strong attack cards and versatile options that will assist in Act 1 specific elites, and the Boss.`;
+    }
+
+    if (selectedAct === "Act 2") {
+      return `${character} Act 2 is about sustainability, and scaling up for the late game. Focus on building a strong defense, and look for cards that can help you maintain HP while you set up for the endgame, while looking for powerful synergies.`;
+    }
+
+    if (selectedAct === "Act 3") {
+      return `${character} In Act 3, it's all about maximizing your damage output and survivability. Look for high-impact cards that can help you burst down the Boss, provide utility such as energy or card draw, and prioritize defensive options that can help you survive the Boss's powerful attacks and mechanics.`;
+    }
+
+    return "Use the dropdowns to select your character and current act for general run advice.";
   };
 
   /*
@@ -84,6 +111,7 @@ function RunAssistant(){
     setEnergy((previousEnergy) => Math.max(previousEnergy - 1, 0));
   };
 
+  
 
   return (
 <main className="run-assistant-page">
@@ -197,6 +225,15 @@ function RunAssistant(){
             or potions change.
           */}
           <p>{getRunRecommendation()}</p>
+         
+          {/* Run advice card */}
+          <h3>Run Advice</h3>
+          
+          {/*
+          Displays broader run advice based on the selected character
+          and current act.
+          */}
+          <p>{getRunAdvice()}</p>
         </div>
       </section>
     </main>
