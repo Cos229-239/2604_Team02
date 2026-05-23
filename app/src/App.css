@@ -58,6 +58,15 @@ section h2 {
   line-height: 1.4;
 }
 
+.card-image {
+  width: 100%;
+  max-width: 220px;
+  border-radius: 10px;
+  display: block;
+  margin: 0.75rem auto;
+  object-fit: cover;
+}
+
 .enemy-card h4 {
   margin-bottom: 8px;
   color: #e6e6e6;
