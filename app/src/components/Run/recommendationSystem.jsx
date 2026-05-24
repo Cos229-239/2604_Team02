@@ -59,7 +59,7 @@ const archetypes = {
      if (text.includes("soul")){
       archetypes.soul += 1;
     }
-     if (text.includes("osty")){
+     if (text.includes("osty")||text.includes("summon")){
       archetypes.osty += 1;
     }
      if (text.includes("doom")){
@@ -70,11 +70,11 @@ const archetypes = {
     if (card.star_cost !== null){
       archetypes.starCost += 1;
     }
-    if (text.includes("sovereign blade")){
+    if (text.includes("sovereign blade")||text.includes("forge")){
       archetypes.sovereignBlade += 1;
     }
     if (text.includes("create")||
-    text.includes("created")){
+    text.includes("created")||text.includes("transform")){
       archetypes.createdCards += 1;
     }
   }
@@ -86,11 +86,11 @@ const archetypes = {
      if (card.cost === 0){
       archetypes.zeroCost += 1;
     }
-      if (text.includes("status") ||
-      text.includes("burn") ||
-      text.includes("dazed") ||
-      text.includes("wound") ||
-      text.includes("void")
+      if (text.includes("Status") ||
+      text.includes("Burn") ||
+      text.includes("Dazed") ||
+      text.includes("Wound") ||
+      text.includes("Void")
     ){
       archetypes.status += 1;
     }
@@ -112,6 +112,77 @@ const archetypes = {
 export function getCardScore(card, mainArchetype, character){
     let score = 0;
     const text = (card.description + " " + card.name).toLowerCase();
+    
+    if(character==="Ironclad"){
+    if (mainArchetype === "strength"){
+      if(text.includes("strength")){score += 10;}
+      if(text.includes("Attack")){score += 3;}
+    }
+     if (mainArchetype === "exhaust"){
+      if(text.includes("exhaust")){score += 10;}
+    }
+      if (mainArchetype === "block"){
+      if(text.includes("block")){score += 10;}
+    }
+  }
+  if(character==="Silent"){
+     if (mainArchetype === "poison"){
+      if(text.includes("poison")){score += 10;}
+    }
+      if (mainArchetype === "shiv"){
+      if(text.includes("shiv")||(card.name === "Finisher"||card.name === "Strangle")){score += 10;}
+      if(text.includes("vulnerable")){score += 3;}
+      if(card.cost === 0){score += 2;}
+     
+    }
+     if (mainArchetype === "sly"){
+      if(text.includes("sly")||text.includes("discard")){score += 10;}
+    }
+  }
+  if(character==="Necrobinder"){
+     if (mainArchetype === "soul"){
+      if(text.includes("soul")||card.name === "Death March"){score += 10;}
+    }
+     if (mainArchetype === "osty"){
+      if(text.includes("osty")||text.includes("summon")){score += 10;}
+    }
+     if (mainArchetype === "doom"){
+      if(text.includes("doom")){score += 10;}
+      if(card.name === "Sleight of Flesh"){score += 5;}
+    }
+  }
+  if(character==="Regent"){
+    if (mainArchetype === "starCost"){
+      if(card.star_cost !== null){score += 10;}
+    }
+    if (mainArchetype === "sovereignBlade"){
+      if(text.includes("sovereign blade")||text.includes("forge")){score += 10;}
+    }
+    if (mainArchetype === "createdCards"){
+      if(text.includes("create")||text.includes("created")){score += 10;}
+      if(text.includes("transform")){score += 5;}
+    }
+  }
+  if(character==="Defect"){
+       if (mainArchetype === "orbs"){
+      if(text.includes("Channel")||text.includes("Focus")||text.includes("evoke")){score += 10;}
+    }
+     if (mainArchetype === "zeroCost"){
+      if(card.cost === 0 || text.includes("0[energy")){score += 10;} 
+    }
+      if (mainArchetype === "status"){
+      if (text.includes("Status") ||
+      text.includes("Burn") ||
+      text.includes("Dazed") ||
+      text.includes("Wound") ||
+      text.includes("Void")){score += 10;}
+    }
+  }
+  
+  if (score === 0){
+    score = 1;
+  }
+
     return score;
 }
 

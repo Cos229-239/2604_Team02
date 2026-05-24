@@ -22,19 +22,16 @@ return(
 
       <h3>Select the 3 cards</h3>
 
-      {["Attack","Skill","Power","Curse"].map(type =>(
-      <div key={type}>
-      <h4>{type}</h4>
+     
       <SortCards
         cards={cardGroups[type]}
         onSelect={(card) => {
-          if (choices.length < 3) {
-            setChoices([...choices, card]);
-          }
+         setDeck([...deck,card]);
+         setChoices([]);
+         setView("Run");
         }}
       />
-        </div>
-      ))}
+        
 </>
 );
 }
