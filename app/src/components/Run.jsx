@@ -2,6 +2,7 @@ import { useState } from "react";
 import cards from "../data/cards2.json";
 import SortCards from "../data/sorter-fixes/card-sorter";
 import DataHelper from "../data/sorter-fixes/runDataHelper";
+import RunAssistant from "./RunAssistant";
 
 
 // *Starter Deck Helper Functions* -Chris
@@ -147,10 +148,12 @@ export default function RewardChooser() {
   });
 
   return (
-    
-    <div>
-      <h3>Save Current Run</h3>
+    <div className="run-page">
+    <section className="run-card">
+      <h3>Save / Load Run</h3>
 
+
+    <section className="run-button-row">
 <button
   onClick={() => {
     const runData = { character, deck, choices };
@@ -159,6 +162,7 @@ export default function RewardChooser() {
   }}
   style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px" }}
 >
+  
   Save Slot 1
 </button>
 
@@ -203,6 +207,9 @@ export default function RewardChooser() {
 >
   Load Slot 3
 </button>
+    </section>
+</section>
+
  {/* If no character is selected, show message to select character -Chris */}
 {character !== "" && (
   <>
@@ -432,7 +439,14 @@ export default function RewardChooser() {
     goBack={() => setView("Run")}
   />
 )}
-    </div>
-  
+
+{/* Run Assistant Card */}
+{character !=="" && view === "Run" && (
+    <RunAssistant character={character} />
+)}
+
+    
+  </div>
   )
+  
 }

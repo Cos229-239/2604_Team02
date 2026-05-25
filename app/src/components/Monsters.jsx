@@ -3,6 +3,15 @@ import { useState } from "react";
 
 import monsters from "../data/monsters.json";
 
+const SPIRE_CODEX_BASE_URL = "https://beta.spire-codex.com";
+
+const getMonsterImageUrl = (monster) => {
+  if (!monster.image_url) {
+    return null;
+  }
+  return `${SPIRE_CODEX_BASE_URL}${monster.image_url}`;
+};
+
 function Monsters() {
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -69,16 +78,20 @@ function Monsters() {
     </p>
 
     <div className="monster-grid">
-      {filteredMonsters.map((monster) => (
+      {filteredMonsters.map((monster) => {
+        const imageUrl = getMonsterImageUrl(monster);
+        
+        return (
         <div className="enemy-card" key={monster.id}>
           <h3>{monster.name}</h3>
-          {monster.image_url && (
+
+          {imageUrl && (
             <img
-              src={monster.image_url}
+              src={imageUrl}
               alt={monster.name}
               className="monster-image"
             />
-          )}
+      )}
 
       <div className="monster-stats">
         <div>
@@ -194,7 +207,8 @@ function Monsters() {
               <p>No move data available.</p>
             )}
         </div>
-      ))}
+       );
+      })}
     </div>
   </>
 );
