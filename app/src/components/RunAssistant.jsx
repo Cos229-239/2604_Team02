@@ -1,4 +1,4 @@
-//health ui, potions, energy, basic decision rules
+//health ui, potions, energy, basic decision rules, relics
 import { useState } from 'react';
 
 function RunAssistant({character, selectedAct}) {
@@ -111,6 +111,34 @@ function RunAssistant({character, selectedAct}) {
     setEnergy((previousEnergy) => Math.max(previousEnergy - 1, 0));
   };
 
+  // for relics
+const addRelic = () => {
+    const availableRelics = [
+      'Lantern (+1 Starting Energy)',
+      'Strawberry (+10 Max HP)',
+      'Coffee Dripper (+1 Max Energy)',
+      'Anchor (Start with Block)',
+    ];
+
+    const newRelic = availableRelics[Math.floor(Math.random() * availableRelics.length)];
+
+    if (!relics.includes(newRelic)) {
+      setRelics([...relics, newRelic]);
+
+      if (newRelic.includes('Strawberry')) {
+        setUpgradeLevel(upgradeLevel + 1);
+      }
+
+      if (newRelic.includes('Coffee Dripper')) {
+        setMaxEnergy(maxEnergy + 1);
+      }
+
+      if (newRelic.includes('Lantern')) {
+        setEnergy(Math.min(energy + 1, maxEnergy));
+      }
+    }
+  };
+  
   
 
   return (
@@ -213,7 +241,20 @@ function RunAssistant({character, selectedAct}) {
             </button>
           </div>
         </div>
+<div className="text-lg font-bold text-amber-300">Relics</div>
+          <div className="mt-2 text-sm text-neutral-200 space-y-1">
+            {relics.map((relic, index) => (
+              <div key={index}>• {relic}</div>
+            ))}
+          </div>
 
+          <button
+            onClick={addRelic}
+            className="mt-3 w-full rounded-xl bg-amber-600 hover:bg-amber-500 p-2 font-bold text-white"
+          >
+            Gain Random Relic
+          </button>
+        
         {/* Decision helper card */}
         <div className="run-card decision-card">
           <h3>Decision Helper</h3>
