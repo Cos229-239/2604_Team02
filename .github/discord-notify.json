@@ -75,7 +75,7 @@
       "weekly": true,
       "diverged": true,
       "mention": false,
-      "owner_name": "",
+      "owner_name": "Alex Magalhaes",
       "owner_discord_user_id": ""
     },
     "ChrisPersonal": {
@@ -84,7 +84,7 @@
       "weekly": true,
       "diverged": true,
       "mention": false,
-      "owner_name": "",
+      "owner_name": "Christopher Cato-Ruiz",
       "owner_discord_user_id": ""
     },
     "dev": {
@@ -111,7 +111,7 @@
       "weekly": true,
       "diverged": true,
       "mention": false,
-      "owner_name": "",
+      "owner_name": "James Phillips",
       "owner_discord_user_id": ""
     },
     "Ryan-Personal": {
@@ -120,7 +120,7 @@
       "weekly": true,
       "diverged": true,
       "mention": false,
-      "owner_name": "",
+      "owner_name": "Ryan Lowrance",
       "owner_discord_user_id": ""
     }
   },
