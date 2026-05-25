@@ -1,5 +1,14 @@
 import { useState, useEffect } from 'react';
 
+const SPIRE_CODEX_BASE_URL = "https://beta.spire-codex.com";
+
+const getCardImageUrl = (card) => {
+  if (!card.image_url) {
+    return null;
+  }
+  return `${SPIRE_CODEX_BASE_URL}${card.image_url}`;
+};
+
 export default function SortCards({ cards, onSelect}) {
   const [sortedCards, setSortedCards] = useState([  ]);
 
@@ -25,14 +34,26 @@ export default function SortCards({ cards, onSelect}) {
       Sort by Name</button>
 
       <div className="card-grid">
-        {sortedCards.map((card) => (
-          <div
-            key={card.id}
-            className="card"
+        {sortedCards.map((card) => {
+          const imageUrl = getCardImageUrl(card);
+          
+          return (
+            <div
+              key={card.id}
+              className="card"
             onClick={() => onSelect && onSelect(card)}
             style={{ cursor: "pointer" }}
           >
             <h3>{card.name}</h3>
+
+            {imageUrl && (
+          <img
+            src={imageUrl}
+            alt={card.name}
+            className="card-image"
+          />
+        )}
+
             <p>Cost: {card.cost}</p>
             <p>Type: {card.type}</p>
             <p>Rarity: {card.rarity}</p>
@@ -41,10 +62,10 @@ export default function SortCards({ cards, onSelect}) {
             <p>Magic: {card.magic}</p>
             <p>Description: {card.description}</p>
           </div>
-        ))}
+         );
+        })}
       </div>
     </div>
   );
 }
-
   

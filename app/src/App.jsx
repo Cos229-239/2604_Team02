@@ -4,6 +4,7 @@ import "./App.css";
 import Cards2 from "./components/Cards2";
 import RewardChooser from "./components/Run/Run";
 import Monsters from "./components/Monsters";
+import References from "./components/References";
 
 function App() {
   
@@ -28,6 +29,10 @@ function App() {
       style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px" }}>
   Enemy Patterns
 </button>
+      <button onClick={() => setPage("References")}
+      style={{ color: "black", backgroundColor: "#ddd" }}>
+  References
+</button>
       
 {page === "Home" && (
         <>
@@ -43,6 +48,9 @@ function App() {
       <h2>Enemy Attack Patterns</h2>
       <Monsters />
       </>
+    )}
+    {page === "References" && (
+      <References />
     )}
     </div>
   );
