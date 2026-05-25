@@ -1,3 +1,4 @@
+
 export function getMainArchetype(deck,character,getStarterDeck){
 
 const archetypes = {
@@ -59,7 +60,7 @@ const archetypes = {
      if (text.includes("soul")){
       archetypes.soul += 1;
     }
-     if (text.includes("osty")||text.includes("summon")){
+     if (text.includes("osty")){
       archetypes.osty += 1;
     }
      if (text.includes("doom")){
@@ -70,11 +71,11 @@ const archetypes = {
     if (card.star_cost !== null){
       archetypes.starCost += 1;
     }
-    if (text.includes("sovereign blade")||text.includes("forge")){
+    if (text.includes("sovereign blade")){
       archetypes.sovereignBlade += 1;
     }
     if (text.includes("create")||
-    text.includes("created")||text.includes("transform")){
+    text.includes("created")){
       archetypes.createdCards += 1;
     }
   }
@@ -112,11 +113,10 @@ const archetypes = {
 export function getCardScore(card, mainArchetype, character){
     let score = 0;
     const text = (card.description + " " + card.name).toLowerCase();
-    
-    if(character==="Ironclad"){
+     if(character==="Ironclad"){
     if (mainArchetype === "strength"){
       if(text.includes("strength")){score += 10;}
-      if(cardType === "Attack"){score += 3;}
+      if(card.type==="Attack"){score += 3;}
     }
      if (mainArchetype === "exhaust"){
       if(text.includes("exhaust")){score += 10;}
@@ -182,7 +182,6 @@ export function getCardScore(card, mainArchetype, character){
   if (score === 0){
     score = 1;
   }
-
     return score;
 }
 

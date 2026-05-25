@@ -60,5 +60,4 @@ const getStarterDeck = (characterName) => {
 
   return [];
 };
-
 export {getStarterDeck};
