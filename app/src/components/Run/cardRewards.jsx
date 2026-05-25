@@ -26,9 +26,9 @@ return(
       <SortCards
         cards={cardGroups[type]}
         onSelect={(card) => {
-         setDeck([...deck,card]);
-         setChoices([]);
-         setView("Run");
+            if (choices.length < 3) {
+            setChoices([...choices, card]);
+          }
         }}
       />
         

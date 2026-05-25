@@ -86,11 +86,11 @@ const archetypes = {
      if (card.cost === 0){
       archetypes.zeroCost += 1;
     }
-      if (text.includes("Status") ||
-      text.includes("Burn") ||
-      text.includes("Dazed") ||
-      text.includes("Wound") ||
-      text.includes("Void")
+      if (text.includes("status") ||
+      text.includes("burn") ||
+      text.includes("dazed") ||
+      text.includes("wound") ||
+      text.includes("void")
     ){
       archetypes.status += 1;
     }
@@ -116,7 +116,7 @@ export function getCardScore(card, mainArchetype, character){
     if(character==="Ironclad"){
     if (mainArchetype === "strength"){
       if(text.includes("strength")){score += 10;}
-      if(text.includes("Attack")){score += 3;}
+      if(cardType === "Attack"){score += 3;}
     }
      if (mainArchetype === "exhaust"){
       if(text.includes("exhaust")){score += 10;}
@@ -165,17 +165,17 @@ export function getCardScore(card, mainArchetype, character){
   }
   if(character==="Defect"){
        if (mainArchetype === "orbs"){
-      if(text.includes("Channel")||text.includes("Focus")||text.includes("evoke")){score += 10;}
+      if(text.includes("channel")||text.includes("focus")||text.includes("evoke")){score += 10;}
     }
      if (mainArchetype === "zeroCost"){
       if(card.cost === 0 || text.includes("0[energy")){score += 10;} 
     }
       if (mainArchetype === "status"){
-      if (text.includes("Status") ||
-      text.includes("Burn") ||
-      text.includes("Dazed") ||
-      text.includes("Wound") ||
-      text.includes("Void")){score += 10;}
+      if (text.includes("status") ||
+      text.includes("burn") ||
+      text.includes("dazed") ||
+      text.includes("wound") ||
+      text.includes("void")){score += 10;}
     }
   }
   
