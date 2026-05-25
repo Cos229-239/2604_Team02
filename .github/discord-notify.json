@@ -51,14 +51,78 @@
     "p_footer": true
   },
   "branches": {
-    "main": false,
-    "gh-pages": false,
-    "Alex-Personal": true,
-    "ChrisPersonal": true,
-    "dev": true,
-    "PatrickPersonal": false,
-    "Phillips-personal": true,
-    "Ryan-Personal": true
+    "main": {
+      "push": false,
+      "nightly": false,
+      "weekly": false,
+      "diverged": false,
+      "mention": false,
+      "owner_name": "",
+      "owner_discord_user_id": ""
+    },
+    "gh-pages": {
+      "push": false,
+      "nightly": false,
+      "weekly": false,
+      "diverged": false,
+      "mention": false,
+      "owner_name": "",
+      "owner_discord_user_id": ""
+    },
+    "Alex-Personal": {
+      "push": true,
+      "nightly": true,
+      "weekly": true,
+      "diverged": true,
+      "mention": false,
+      "owner_name": "",
+      "owner_discord_user_id": ""
+    },
+    "ChrisPersonal": {
+      "push": true,
+      "nightly": true,
+      "weekly": true,
+      "diverged": true,
+      "mention": false,
+      "owner_name": "",
+      "owner_discord_user_id": ""
+    },
+    "dev": {
+      "push": true,
+      "nightly": false,
+      "weekly": false,
+      "diverged": true,
+      "mention": false,
+      "owner_name": "",
+      "owner_discord_user_id": ""
+    },
+    "PatrickPersonal": {
+      "push": false,
+      "nightly": false,
+      "weekly": false,
+      "diverged": false,
+      "mention": false,
+      "owner_name": "",
+      "owner_discord_user_id": ""
+    },
+    "Phillips-personal": {
+      "push": true,
+      "nightly": true,
+      "weekly": true,
+      "diverged": true,
+      "mention": false,
+      "owner_name": "",
+      "owner_discord_user_id": ""
+    },
+    "Ryan-Personal": {
+      "push": true,
+      "nightly": true,
+      "weekly": true,
+      "diverged": true,
+      "mention": false,
+      "owner_name": "",
+      "owner_discord_user_id": ""
+    }
   },
   "nightly_branches": {
     "main": false,
