@@ -1,5 +1,6 @@
 //health ui, potions, energy, basic decision rules, relics
 import { useState } from 'react';
+import ErrorBoundary from '../data/sorter-fixes/error-handler/error-finder';
 
 function RunAssistant({character, selectedAct}) {
     /*
@@ -8,6 +9,9 @@ function RunAssistant({character, selectedAct}) {
     Later, this can change based on the selected character,
     relics, upgrades, or run data.
   */
+  const [relics, setRelics] = useState([]);
+  const [upgradeLevel, setUpgradeLevel] = useState(0);
+  const [maxEnergy, setMaxEnergy] = useState(3);
   const maxHp = 80;
 
    /*
@@ -241,20 +245,22 @@ const addRelic = () => {
             </button>
           </div>
         </div>
-<div className="text-lg font-bold text-amber-300">Relics</div>
-          <div className="mt-2 text-sm text-neutral-200 space-y-1">
-            {relics.map((relic, index) => (
-              <div key={index}>• {relic}</div>
-            ))}
-          </div>
+        <div className="run-card">
+  <div className="text-lg font-bold text-amber-300">Relics</div>
 
-          <button
-            onClick={addRelic}
-            className="mt-3 w-full rounded-xl bg-amber-600 hover:bg-amber-500 p-2 font-bold text-white"
-          >
-            Gain Random Relic
-          </button>
-        
+  <div className="mt-2 text-sm text-neutral-200 space-y-1">
+    {relics.map((relic, index) => (
+      <div key={index}>• {relic}</div>
+    ))}
+  </div>
+
+  <button
+    onClick={addRelic}
+    className="mt-3 w-full rounded-xl bg-amber-600 hover:bg-amber-500 p-2 font-bold text-white"
+  >
+    Gain Random Relic
+  </button>
+</div>
         {/* Decision helper card */}
         <div className="run-card decision-card">
           <h3>Decision Helper</h3>
