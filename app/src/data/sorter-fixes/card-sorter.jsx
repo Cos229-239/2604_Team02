@@ -9,6 +9,17 @@ const getCardImageUrl = (card) => {
   return `${SPIRE_CODEX_BASE_URL}${card.image_url}`;
 };
 
+const cleanDescription = (text) => {
+  if (!text) {
+    return "";
+  }
+
+  return text
+  .replace(/\[\/?[a-zA-Z]+\]/g, "")
+  .replace(/\[energy:(\d+)\]/g, "$1 Energy")
+  .replace(/\[star:(\d+)\]/g, "$1 Star");
+};
+
 export default function SortCards({ cards, onSelect}) {
   const [sortedCards, setSortedCards] = useState([  ]);
 
@@ -57,10 +68,16 @@ export default function SortCards({ cards, onSelect}) {
             <p>Cost: {card.cost}</p>
             <p>Type: {card.type}</p>
             <p>Rarity: {card.rarity}</p>
-            <p>Damage: {card.damage}</p>
-            <p>Block: {card.block}</p>
-            <p>Magic: {card.magic}</p>
-            <p>Description: {card.description}</p>
+            {card.damage !== null && card.damage !== undefined && (
+              <p>Damage: {card.damage}</p>
+            )}
+            {card.block !== null && card.block !== undefined && (
+              <p>Block: {card.block}</p>
+            )}
+              {card.magic !== null && card.magic !== undefined && (
+              <p>Magic: {card.magic}</p>
+            )}
+            <p>Description: {cleanDescription(card.description)}</p>
           </div>
          );
         })}
