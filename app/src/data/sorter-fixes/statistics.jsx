@@ -2,9 +2,15 @@ import React, { useState, useEffect } from "react";
 import characters from "../characters.json";
 import acts from "../acts.json";
 
+import cards from "../cards2.json";
+
 export default function Statistics() {
+    
     // Extract character IDs from your JSON
     const CHARACTER_IDS = characters.map(c => c.id);
+    // Extarct card IDs from your JSON
+    const CARD_IDS= cards.map(c => c.id);
+
 
     // Extract act IDs from your JSON (skip DEPRECATED_ACT)
     const ACT_IDS = acts
@@ -15,6 +21,7 @@ export default function Statistics() {
     const [selectedCharacter, setSelectedCharacter] = useState(CHARACTER_IDS[0]);
     const [selectedAct, setSelectedAct] = useState(ACT_IDS[0]);
     const [asked, setAsked] = useState(false);
+    
 
     // Load stats on mount
     useEffect(() => {
@@ -56,6 +63,15 @@ export default function Statistics() {
     const total = current.wins + current.losses;
     const winRate = total > 0 ? ((current.wins / total) * 100).toFixed(1) : 0;
     const lossRate = total > 0 ? ((current.losses / total) * 100).toFixed(1) : 0;
+    const cardStats = current.cardStats || {};
+    const cardRatios = {};
+
+    // Calculate card win/loss ratios for the top 3 cards in the current deck (or all if less than 3)
+    CARD_IDS.forEach(card => {
+        const stats = cardStats[card] || { wins: 0, losses: 0 };
+        const totalCard = stats.wins + stats.losses;
+        cardRatios[card] = totalCard > 0 ? ((stats.wins / totalCard) * 100).toFixed(1) + '%' : 'N/A';
+    });
 
     return (
         <div>
@@ -126,6 +142,12 @@ export default function Statistics() {
                 <p>Losses: {current.losses}</p>
                 <p>Win Rate: {winRate}%</p>
                 <p>Loss Rate: {lossRate}%</p>
+                <p className="mt-4 text-lg font-bold">Card Performance</p>
+                {CARD_IDS.map(card => (
+                    <p key={card}>
+                        {card}: {cardRatios[card]} win rate
+                    </p>
+                ))}
             </div>
         </div>
     );

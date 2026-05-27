@@ -218,6 +218,8 @@ export default function RewardChooser() {
       character={character}
       deck={deck}
       choices={choices}
+      cardGroups={cardGroups}
+      
     />
   </>
 )}

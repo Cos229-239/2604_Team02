@@ -2,7 +2,11 @@
     "character": "Ironclad",
     "act": "Act 1",
     "deck": [],
-
+    "cardstats": {
+        "Strike": { "wins": 0, "losses": 0 },
+        "Defend": { "wins": 0, "losses": 0 },
+        "Bash": { "wins": 0, "losses": 0 }
+    },
     "globalStats": {
         "Ironclad": {
             "Act 1": { "wins": 0, "losses": 0 },
