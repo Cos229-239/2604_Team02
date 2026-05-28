@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./App.css";
 
 import Cards2 from "./components/Cards2";
-import RewardChooser from "./components/Run/Run";
+import RewardChooser from "./components/Run";
 import Monsters from "./components/Monsters";
 import References from "./components/References";
 
@@ -41,9 +41,11 @@ function App() {
         </>
       )}
   {page === "Run" && (
-      <RewardChooser />
-    )}
-    {page === "EnemyPatterns" && (
+    <section className="run-dashboard">
+      <Run />
+    </section>
+  )}
+  {page === "EnemyPatterns" && (
       <>
       <h2>Enemy Attack Patterns</h2>
       <Monsters />

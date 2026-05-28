@@ -230,15 +230,23 @@ getStarterDeck={getStarterDeck}
   Save Current Run
 </button>   
 
-<h3>Current Deck:</h3>
-      {deck.map((card,index)=>(
-        <div key={index}>{card.name}</div>
+      <h3>Current Deck</h3>
 
-      ))}
+<div className="deck-summary">
+  {Object.entries(
+    deck.reduce((counts, card) => {
+      counts[card.name] = (counts[card.name] || 0) + 1;
+      return counts;
+    }, {})
+  ).map(([cardName, count]) => (
+    <div className="deck-summary-row" key={cardName}>
+      <span>{cardName}</span>
+      <span>x{count}</span>
+    </div>
+  ))}
+</div>
 
-
-      <p>Deck size: {deck.length}</p>
-      <h3>Current Archetype: {mainArchetype}</h3>
+<p>Deck size: {deck.length}</p>
     </>
       )}
   </>
