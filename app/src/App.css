@@ -310,3 +310,88 @@ section h2 {
 .run-tracker-summary p {
   margin: 0;
 }
+
+.run-helper-section {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border: 1px solid #3f3f46;
+  border-radius: 12px;
+  background-color: rgba(39, 39, 42, 0.55);
+}
+
+.run-input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 0.9rem;
+}
+
+.run-input-group label {
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+  color: #fbbf24;
+}
+
+.run-input-group select {
+  width: 220px;
+  padding: 0.45rem;
+  border-radius: 8px;
+  border: 1px solid #52525b;
+  background-color: #18181b;
+  color: #e5e7eb;
+}
+
+.recommendation-box {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 12px;
+  background-color: rgba(24, 24, 27, 0.9);
+  border: 1px solid #52525b;
+}
+
+.recommendation-box h4 {
+  margin-top: 0;
+  color: #fbbf24;
+}
+
+.recommendation-box p {
+  margin-bottom: 0;
+  line-height: 1.5;
+}
+
+.run-assistant-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem auto 0 auto;
+  max-width: 1100px;
+}
+
+.run-advice-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 2rem;
+  max-width: 1100px;
+  margin: 2rem auto 0 auto;
+  align-items: start;
+}
+
+.run-card {
+  padding: 1rem;
+  border: 1px solid #3f3f46;
+  border-radius: 12px;
+  background-color: rgba(39, 39, 42, 0.65);
+}
+
+.decision-card,
+.pathing-card {
+  width: 100%;
+  min-height: auto;
+}
+
+@media (max-width: 900px) {
+  .run-assistant-grid,
+  .run-advice-layout {
+    grid-template-columns: 1fr;
+  }
+}
