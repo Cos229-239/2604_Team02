@@ -58,12 +58,15 @@ export default function Statistics() {
     const lossRate = total > 0 ? ((current.losses / total) * 100).toFixed(1) : 0;
 
     return (
-        <div>
+        <div className="run-statistics">
             <h2 className="text-xl font-bold text-amber-300 mb-2">Run Statistics</h2>
 
+            <div className="stats-grid">
             {/* Character Selector */}
-            <div className="mb-2">
-                <p className="text-amber-200">Select Character</p>
+            <div className="stats-card">
+                <h4>Select Character</h4>
+
+                <div className="button-group">
                 {CHARACTER_IDS.map(char => (
                     <button
                         key={char}
@@ -81,7 +84,9 @@ export default function Statistics() {
 
             {/* Act Selector */}
             <div className="mb-4">
-                <p className="text-amber-200">Select Act</p>
+                <h4>Select Act</h4>
+
+                <div className="button-group">
                 {ACT_IDS.map(act => (
                     <button
                         key={act}
@@ -96,17 +101,24 @@ export default function Statistics() {
                     </button>
                 ))}
             </div>
+            </div>
+            </div>
 
             {/* Ask Win/Loss */}
-            {!asked && (
-                <div className="mb-4">
-                    <p className="text-amber-200 mb-2">Did you complete the act?</p>
+                <div className="stats-card">
+                    <h4>Did you complete the act?</h4>
 
-                    <button
-                        onClick={() => handleResult(true)}
-                        className="bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-3 rounded m-1"
-                    >
-                        Yes (Win)
+                    <p className="text-amber-100">
+                        {selectedCharacter} — {selectedAct}
+                    </p>
+
+                    {!asked ? (
+                        <div className="button-group">
+                            <button
+                                onClick={() => handleResult(true)}
+                                className="bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-3 rounded m-1"
+                            >
+                                Yes (Win)
                     </button>
 
                     <button
@@ -116,9 +128,16 @@ export default function Statistics() {
                         No (Loss)
                     </button>
                 </div>
-            )}
+                    ) : (
+                        <p className="text-amber-100 mt-2">Result recorded!</p>
+                    )}
+            </div>
+
 
             {/* Stats Display */}
+             <div className="stats-card">
+                <h4>Record Summary</h4>
+
             <div className="text-amber-100">
                 <p className="text-lg font-bold">{selectedCharacter} — {selectedAct}</p>
                 <p>Total Runs: {total}</p>
@@ -126,7 +145,9 @@ export default function Statistics() {
                 <p>Losses: {current.losses}</p>
                 <p>Win Rate: {winRate}%</p>
                 <p>Loss Rate: {lossRate}%</p>
+                </div>
             </div>
         </div>
+    </div>
     );
 }
