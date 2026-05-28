@@ -1,6 +1,6 @@
 //health ui, potions, energy, basic decision rules, relics
 import { useState } from 'react';
-import ErrorBoundary from '../data/sorter-fixes/error-handler/error-finder';
+import ErrorBoundary from '../../data/sorter-fixes/error-handler/error-finder';
 
 function RunAssistant({character, selectedAct}) {
     /*

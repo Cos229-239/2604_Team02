@@ -1,70 +1,15 @@
 import { useState } from "react";
-import cards from "../data/cards2.json";
-import SortCards from "../data/sorter-fixes/card-sorter";
-import DataHelper from "../data/sorter-fixes/runDataHelper";
+import cards from "../../data/cards2.json";
+import SortCards from "../../data/sorter-fixes/card-sorter";
+import DataHelper from "../../data/sorter-fixes/runDataHelper";
+import { getMainArchetype, getRecommendedCard } from "./recommendationSystem";
+import CardRewards from "./CardRewards";
+import { getStarterDeck } from "./starterDeck";
+import CharacterSelect from "./characterSelect";
 import RunAssistant from "./RunAssistant";
 
 
-// *Starter Deck Helper Functions* -Chris
 
-const getCardsByName = (cardName, amount) => {
-  const card = cards.find((card) => card.name === cardName);
-
-  if (!card) {
-    console.log(`Card not found: ${cardName}`);
-    return [];
-  }
-
-  return Array(amount).fill(card);
-};
-
-const getStarterDeck = (characterName) => {
-  if (characterName === "Ironclad") {
-    return [
-      ...getCardsByName("Strike", 5),
-      ...getCardsByName("Defend", 4),
-      ...getCardsByName("Bash", 1),
-    ];
-  }
-
-  if (characterName === "Silent") {
-    return [
-      ...getCardsByName("Strike", 5),
-      ...getCardsByName("Defend", 5),
-      ...getCardsByName("Survivor", 1),
-      ...getCardsByName("Neutralize", 1),
-    ];
-  }
-
-  if (characterName === "Defect") {
-    return [
-      ...getCardsByName("Strike", 4),
-      ...getCardsByName("Defend", 4),
-      ...getCardsByName("Zap", 1),
-      ...getCardsByName("Dualcast", 1),
-    ];
-  }
-
-  if (characterName === "Necrobinder") {
-    return [
-      ...getCardsByName("Strike", 4),
-      ...getCardsByName("Defend", 4),
-      ...getCardsByName("Bodyguard", 1),
-      ...getCardsByName("Unleash", 1),
-    ];
-  }
-
-  if (characterName === "Regent") {
-    return [
-      ...getCardsByName("Strike", 4),
-      ...getCardsByName("Defend", 4),
-      ...getCardsByName("Falling Star", 1),
-      ...getCardsByName("Venerate", 1),
-    ];
-  }
-
-  return [];
-};
 
 function SavedRunView({ slot, loadRun, goBack }) {
   const data = localStorage.getItem(slot);
@@ -118,13 +63,16 @@ function SavedRunView({ slot, loadRun, goBack }) {
   );
 }
 
-
 export default function RewardChooser() {
   const[view, setView] = useState("Run");
   const [deck, setDeck] = useState([]);
   const [choices, setChoices] = useState([]);
   const [character, setCharacter] = useState("");
   const [sortedCards, setSortedCards] = useState(cards);
+
+  const mainArchetype = getMainArchetype(deck, character, getStarterDeck);
+
+  const recommendedCard = getRecommendedCard(choices, mainArchetype, character);
 
   const cardGroups = {
     Attack: [],
@@ -139,13 +87,12 @@ export default function RewardChooser() {
   setView("Run");
 };
 
-
-
   cards.forEach(card=> {
     if (cardGroups[card.type]){
       cardGroups[card.type].push(card);
     }
   });
+
 
   return (
     <div className="run-page">
@@ -225,8 +172,7 @@ export default function RewardChooser() {
 )}
 
       <h2>Current Run</h2>
-      {character && <h3>Character: {character}</h3>}
-      {character && (
+          {character && (
         <button
         onClick={()=> {
           setCharacter("")
@@ -238,16 +184,20 @@ export default function RewardChooser() {
           Reset Run
         </button>
       )}
+      {character && <h3>Character: {character}</h3>}
+  
 {view === "Run" && (
   <>
   
    {character !== "" &&(
       <>
-      <button
-      onClick={()=> setView("Remove Cards")}
+      <button onClick={() =>setView("Add Cards")}
+  style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
+    Add Cards
+  </button>
+      <button onClick={()=> setView("Remove Cards")}
       style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
         Remove Card From Deck
-
       </button>
   <button onClick={() =>setView("Card Rewards")}
   style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
@@ -255,25 +205,12 @@ export default function RewardChooser() {
   </button>
 </>
     )}
-    {character === "" && (
-      <>
-      <h3>Select Your Character</h3>
-
-      {["Ironclad","Silent","Defect","Necrobinder","Regent"].map((char) => (
-        <button
-        key={char}
-        onClick={()=>{
-        setCharacter(char);
-        setDeck(getStarterDeck(char));
-        setChoices([]);
-        setView("Run");
-      }}
-        style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
-        {char}
-        </button>
-      ))}
-</>
-)}
+{character === "" && (<CharacterSelect setCharacter = {setCharacter}
+setDeck={setDeck}
+setChoices ={setChoices}
+setView={setView}
+getStarterDeck={getStarterDeck}
+/>)}
 {character !== "" &&(
   <>
       <h3>Save Current Run</h3>
@@ -291,9 +228,44 @@ export default function RewardChooser() {
   style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px" }}
 >
   Save Current Run
-</button> 
-      <h3>Build Your Deck</h3>
-      {["Attack","Skill","Power","Curse"].map(type =>(
+</button>   
+
+<h3>Current Deck:</h3>
+      {deck.map((card,index)=>(
+        <div key={index}>{card.name}</div>
+
+      ))}
+
+
+      <p>Deck size: {deck.length}</p>
+      <h3>Current Archetype: {mainArchetype}</h3>
+    </>
+      )}
+  </>
+    )}
+{view === "Card Rewards" && ( 
+  <CardRewards
+  choices={choices}
+  setChoices={setChoices}
+    deck={deck}
+    setDeck={setDeck}
+    cardGroups={cardGroups}
+    setView={setView}
+    mainArchetype={mainArchetype}
+    recommendedCard={recommendedCard}
+  />
+)}
+
+{view === "Add Cards" && (
+<>
+ <button onClick={()=>setView("Run")}
+        style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
+        Back to Run
+        </button>
+
+        <h3>Add Cards</h3>
+
+{["Attack","Skill","Power","Curse"].map(type =>(
         <div key={type}>
       <h4>{type}</h4>
       <SortCards
@@ -302,60 +274,11 @@ export default function RewardChooser() {
       />
         </div>
       ))}
+</>
+)}
+    
 
-      <h3>Current Deck:</h3>
-      {deck.map((card,index)=>(
-        <div key={index}>{card.name}</div>
-        
-      ))}
-      
-      
-      <p>Deck size: {deck.length}</p>
-
-      <h4> Your Deck:</h4>
-      {deck.map((c,index)=>(
-        <div key = {index}>{c.name}</div>
-      ))}
-    </>
-      )}
-  </>
-    )}
-
-   
-      {view === "Card Rewards" &&(<>
-      <button onClick={()=>setView("Run")}
-        style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
-        Back to Run
-        </button>
-      <h3>Selected Cards:</h3>
-      {choices.map((c,index)=>(
-      <div key={index}>{c.name}</div>
-      ))}
-      <button onClick={()=>setChoices([])}
-        style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
-        Reset Choices 
-        </button>
-
-
-      <h3>Select the 3 cards</h3>
-      {["Attack","Skill","Power","Curse"].map(type =>(
-      <div key={type}>
-      <h4>{type}</h4>
-      <SortCards
-        cards={cardGroups[type]}
-        onSelect={(card) => {
-          if (choices.length < 3) {
-            setChoices([...choices, card]);
-          }
-        }}
-      />
-        </div>
-      ))}
- 
-
-</>)}
-
-{view == "Remove Cards" && (
+{view === "Remove Cards" && (
 <>
  <button onClick={()=>setView("Run")}
         style={{ color: "black", backgroundColor: "#ddd", marginRight: "10px"}}>
@@ -443,10 +366,11 @@ export default function RewardChooser() {
 )}
 
 {/* Run Assistant Card */}
+{/*
 {character !=="" && view === "Run" && (
     <RunAssistant character={character} />
 )}
-
+*/}
     
   </div>
   )

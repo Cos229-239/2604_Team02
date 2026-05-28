@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./App.css";
 
 import Cards2 from "./components/Cards2";
-import RewardChooser from "./components/Run";
+import RewardChooser from "./components/Run/Run";
 import Monsters from "./components/Monsters";
 import References from "./components/References";
 
