@@ -374,11 +374,10 @@ getStarterDeck={getStarterDeck}
 )}
 
 {/* Run Assistant Card */}
-{/*
+
 {character !=="" && view === "Run" && (
     <RunAssistant character={character} />
 )}
-*/}
     
   </div>
   )
