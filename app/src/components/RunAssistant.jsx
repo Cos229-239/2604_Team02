@@ -1,17 +1,29 @@
-//health ui, potions, energy, basic decision rules, relics, refactored
-import React, { useState } from 'react';
+//health ui, potions, energy, basic decision rules, relics
+import { useState } from 'react';
+import ErrorBoundary from '../data/sorter-fixes/error-handler/error-finder';
+import { getPathRecommendation } from "../data/sorter-fixes/runDecisionHelper";
 
-// Define relics cleanly outside the component to prevent recreating the array on every render
-const AVAILABLE_RELICS = [
+
+  const AVAILABLE_RELICS = [
   { id: 'lantern', name: 'Lantern', description: '+1 Starting Energy' },
   { id: 'strawberry', name: 'Strawberry', description: '+10 Max HP' },
   { id: 'coffee_dripper', name: 'Coffee Dripper', description: '+1 Max Energy' },
   { id: 'anchor', name: 'Anchor', description: 'Start with Block' },
 ];
 
-function RunAssistant({ character, selectedAct }) {
-  // --- STATE VALUES ---
-  const [maxHp, setMaxHp] = useState(80);
+
+function RunAssistant({character, selectedAct}) {
+    /*
+    maxHp is currently hardcoded for now.
+
+    Later, this can change based on the selected character,
+    relics, upgrades, or run data.
+  */
+  const maxHp = 80;
+
+   /*
+    State values track the current run situation.
+   */
   const [currentHp, setCurrentHp] = useState(80);
   const [potions, setPotions] = useState(3);
   const [energy, setEnergy] = useState(3);
@@ -63,34 +75,60 @@ function RunAssistant({ character, selectedAct }) {
     setCurrentHp(value);
   };
 
-  const usePotionSlot = () => setPotions((prev) => Math.max(prev - 1, 0));
-  const gainPotionSlot = () => setPotions((prev) => Math.min(prev + 1, 3));
-  
-  const useEnergy = () => setEnergy((prev) => Math.max(prev - 1, 0));
-  const gainEnergy = () => setEnergy((prev) => Math.min(prev + 1, maxEnergy));
-
-  const addRelic = () => {
-    const randomIndex = Math.floor(Math.random() * AVAILABLE_RELICS.length);
-    const chosenRelic = AVAILABLE_RELICS[randomIndex];
-
-    // Avoid duplicate relics if you want to match game mechanics
-    if (relics.some(r => r.id === chosenRelic.id)) return;
-
-    setRelics((prevRelics) => [...prevRelics, chosenRelic]);
-
-    // Handle relic specific side-effects cleanly
-    if (chosenRelic.id === 'strawberry') {
-      setMaxHp((prev) => prev + 10);
-      setCurrentHp((prev) => prev + 10); // Typically heals you for 10 too!
-      setUpgradeLevel((prev) => prev + 10);
-    } else if (chosenRelic.id === 'coffee_dripper') {
-      setMaxEnergy((prev) => prev + 1);
-    } else if (chosenRelic.id === 'lantern') {
-      setEnergy((prev) => Math.min(prev + 1, maxEnergy));
-    }
+  /*
+  Handles changes to Potion inventory
+  */
+  const usePotionSlot = () => {
+  setPotions((previousPotions) => Math.max(previousPotions - 1, 0));
   };
 
-  // --- RENDER ---
+  const gainPotionSlot = () => {
+  setPotions((previousPotions) => Math.min(previousPotions + 1, 3));
+  };
+
+
+
+  /*
+  Handles changes to Energy economy
+  */
+    const gainEnergy = () => {
+    setEnergy((previousEnergy) => Math.min(previousEnergy + 1, 10));
+  };
+
+  const useEnergy = () => {
+    setEnergy((previousEnergy) => Math.max(previousEnergy - 1, 0));
+  };
+
+  // for relics
+const addRelic = () => {
+    const availableRelics = [
+      'Lantern (+1 Starting Energy)',
+      'Strawberry (+10 Max HP)',
+      'Coffee Dripper (+1 Max Energy)',
+      'Anchor (Start with Block)',
+    ];
+
+    const newRelic = availableRelics[Math.floor(Math.random() * availableRelics.length)];
+
+    if (!relics.includes(newRelic)) {
+      setRelics([...relics, newRelic]);
+
+      if (newRelic.includes('Strawberry')) {
+        setUpgradeLevel(upgradeLevel + 1);
+      }
+
+      if (newRelic.includes('Coffee Dripper')) {
+        setMaxEnergy(maxEnergy + 1);
+      }
+
+      if (newRelic.includes('Lantern')) {
+        setEnergy(Math.min(energy + 1, maxEnergy));
+      }
+    }
+  };
+  
+  
+
   return (
     <main className="run-assistant-page">
       <section className="run-assistant-header">
@@ -147,31 +185,84 @@ function RunAssistant({ character, selectedAct }) {
             <button onClick={gainPotionSlot}>Add Potion</button>
           </div>
         </div>
+<div className="text-lg font-bold text-amber-300">Relics</div>
+          <div className="mt-2 text-sm text-neutral-200 space-y-1">
+            {relics.map((relic, index) => (
+              <div key={index}>• {relic}</div>
+            ))}
+          </div>
 
-        {/* Relics Section */}
-        <div className="text-lg font-bold text-amber-300">Relics</div>
-        <div className="mt-2 text-sm text-neutral-200 space-y-1">
-          {relics.map((relic, index) => (
-            <div key={index}>⚡ {relic.name} ({relic.description})</div>
-          ))}
-        </div>
+          <button
+            onClick={addRelic}
+            className="mt-3 w-full rounded-xl bg-amber-600 hover:bg-amber-500 p-2 font-bold text-white"
+          >
+            Gain Random Relic
+          </button>
         
-        <button 
-          onClick={addRelic} 
-          className="mt-3 w-full rounded-xl bg-amber-600 hover:bg-amber-500 p-2 font-bold text-white"
-        >
-          Gain Random Relic
-        </button>
-
-        {/* Decision Helper Card */}
+        {/* Decision helper card */}
         <div className="run-card decision-card">
           <h3>Decision Helper</h3>
           <p>{getRunRecommendation()}</p>
           
           <h3>Run Advice</h3>
           <p>{getRunAdvice()}</p>
+          </div>
+
+          {/* Path recommendation card */}
+          <div className="run-card pathing-card">
+          <h3>Pathing Recommendation</h3>
+
+          <div className="run-input-group">
+            <label>Health Situation</label>
+            <select
+              value={healthStatus}
+              onChange={(e) => setHealthStatus(e.target.value)}
+            >
+              <option value="healthy">Healthy</option>
+              <option value="injured">Injured</option>
+              <option value="critical">Critical</option>
+            </select>
+          </div>
+
+          <div className="run-input-group">
+            <label>Run Goal</label>
+            <select
+              value={runGoal}
+              onChange={(e) => setRunGoal(e.target.value)}
+            >
+              <option value="balanced">Balanced</option>
+              <option value="offense">Improve Damage</option>
+              <option value="defense">Improve Defense</option>
+              <option value="upgrades">Find Upgrades</option>
+            </select>
+          </div>
+
+          <div className="run-input-group">
+            <label>Path Type</label>
+            <select
+              value={pathType}
+              onChange={(e) => setPathType(e.target.value)}
+            >
+              <option value="safe">Safe Path</option>
+              <option value="elite">Elite Path</option>
+              <option value="shop">Shop Path</option>
+              <option value="rest">Rest Site Path</option>
+            </select>
+          </div>
+
+          <div className="recommendation-box">
+            <h4>Recommendation</h4>
+            <p>
+              {getPathRecommendation({
+                healthStatus,
+                runGoal,
+                pathType,
+                selectedAct,
+              })}
+            </p>
+          </div>
         </div>
-      </section>
+        </section>
     </main>
   );
 }
