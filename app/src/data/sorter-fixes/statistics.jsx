@@ -9,7 +9,7 @@ export default function Statistics() {
     // Extract character IDs from your JSON
     const CHARACTER_IDS = characters.map(c => c.id);
     // Extarct card IDs from your JSON
-    const CARD_IDS= cards.map(c => c.id);
+    
 
 
     // Extract act IDs from your JSON (skip DEPRECATED_ACT)
@@ -63,15 +63,45 @@ export default function Statistics() {
     const total = current.wins + current.losses;
     const winRate = total > 0 ? ((current.wins / total) * 100).toFixed(1) : 0;
     const lossRate = total > 0 ? ((current.losses / total) * 100).toFixed(1) : 0;
-    const cardStats = current.cardStats || {};
-    const cardRatios = {};
+       const cardStats = current.cardStats || {};
 
-    // Calculate card win/loss ratios for the top 3 cards in the current deck (or all if less than 3)
-    CARD_IDS.forEach(card => {
-        const stats = cardStats[card] || { wins: 0, losses: 0 };
-        const totalCard = stats.wins + stats.losses;
-        cardRatios[card] = totalCard > 0 ? ((stats.wins / totalCard) * 100).toFixed(1) + '%' : 'N/A';
+    // Build an array of cards with win rates
+    const cardWinData = CARD_IDS.map(card => {
+        const s = cardStats[card] || { wins: 0, losses: 0 };
+        const total = s.wins + s.losses;
+        const winRate = total > 0 ? (s.wins / total) * 100 : null;
+
+        return {
+            id: card,
+            wins: s.wins,
+            losses: s.losses,
+            total,
+            winRate
+        };
     });
+
+    // Filter out cards with no data
+    const filtered = cardWinData.filter(c => c.total > 0);
+
+    // Sort by win rate descending
+    filtered.sort((a, b) => (b.winRate ?? 0) - (a.winRate ?? 0));
+
+    // Determine top 3 — but expand to top 10 if ties occur
+    let topCards = filtered.slice(0, 3);
+
+    if (topCards.length > 0) {
+        const thirdRate = topCards[topCards.length - 1].winRate;
+
+        // Find all cards tied with the 3rd place card
+        const tied = filtered.filter(c => c.winRate === thirdRate);
+
+        // If ties push the list above 3, expand to max 10
+        if (tied.length > 1) {
+            topCards = filtered.slice(0, 10);
+        }
+    }
+
+    
 
     return (
         <div className="run-statistics">
@@ -155,18 +185,19 @@ export default function Statistics() {
                 <h4>Record Summary</h4>
 
                 <div className="text-amber-100">
-                    <p className="text-lg font-bold">{selectedCharacter} — {selectedAct}</p>
-                    <p>Total Runs: {total}</p>
-                    <p>Wins: {current.wins}</p>
-                    <p>Losses: {current.losses}</p>
-                    <p>Win Rate: {winRate}%</p>
-                    <p>Loss Rate: {lossRate}%</p>
-                    <p className="mt-4 text-lg font-bold">Card Performance</p>
-                    {CARD_IDS.map(card => (
-                        <p key={card}>
-                            {card}: {cardRatios[card]} win rate
-                        </p>
-                    ))}
+                    <p className="mt-4 text-lg font-bold">Top Cards</p>
+
+{topCards.length === 0 ? (
+    <p>No card data yet.</p>
+) : (
+    topCards.map(card => (
+        <p key={card.id}>
+            {card.id}: {card.winRate.toFixed(1)}% win rate 
+            ({card.wins}W / {card.losses}L)
+        </p>
+    ))
+)}
+
                 </div>
             </div>
         </div>
