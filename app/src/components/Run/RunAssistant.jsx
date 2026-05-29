@@ -3,6 +3,15 @@ import { useState } from 'react';
 import ErrorBoundary from '../data/sorter-fixes/error-handler/error-finder';
 import { getPathRecommendation } from "../data/sorter-fixes/runDecisionHelper";
 
+
+  const AVAILABLE_RELICS = [
+  { id: 'lantern', name: 'Lantern', description: '+1 Starting Energy' },
+  { id: 'strawberry', name: 'Strawberry', description: '+10 Max HP' },
+  { id: 'coffee_dripper', name: 'Coffee Dripper', description: '+1 Max Energy' },
+  { id: 'anchor', name: 'Anchor', description: 'Start with Block' },
+];
+
+
 function RunAssistant({character, selectedAct}) {
     /*
     maxHp is currently hardcoded for now.
@@ -13,7 +22,7 @@ function RunAssistant({character, selectedAct}) {
   const [relics, setRelics] = useState([]);
   const [upgradeLevel, setUpgradeLevel] = useState(0);
   const [maxEnergy, setMaxEnergy] = useState(3);
-  const maxHp = 80;
+  const [maxHp, setMaxHp] = useState(80);
   const [healthStatus, setHealthStatus] = useState("healthy");
   const [runGoal, setRunGoal] = useState("balanced");
   const [pathType, setPathType] = useState("safe");
@@ -112,7 +121,7 @@ function RunAssistant({character, selectedAct}) {
   Handles changes to Energy economy
   */
     const gainEnergy = () => {
-    setEnergy((previousEnergy) => Math.min(previousEnergy + 1, 10));
+    setEnergy((previousEnergy) => Math.min(previousEnergy + 1, maxEnergy));
   };
 
   const useEnergy = () => {
@@ -121,31 +130,31 @@ function RunAssistant({character, selectedAct}) {
 
   // for relics
 const addRelic = () => {
-    const availableRelics = [
-      'Lantern (+1 Starting Energy)',
-      'Strawberry (+10 Max HP)',
-      'Coffee Dripper (+1 Max Energy)',
-      'Anchor (Start with Block)',
-    ];
+  const randomIndex = Math.floor(Math.random() * AVAILABLE_RELICS.length);
+  const chosenRelic = AVAILABLE_RELICS[randomIndex];
 
-    const newRelic = availableRelics[Math.floor(Math.random() * availableRelics.length)];
+  // Prevent duplicate relics
+  if (relics.some((relic) => relic.id === chosenRelic.id)) {
+    return;
+  }
 
-    if (!relics.includes(newRelic)) {
-      setRelics([...relics, newRelic]);
+  setRelics((previousRelics) => [...previousRelics, chosenRelic]);
 
-      if (newRelic.includes('Strawberry')) {
-        setUpgradeLevel(upgradeLevel + 1);
-      }
+  if (chosenRelic.id === 'strawberry') {
+    setMaxHp((previousMaxHp) => previousMaxHp + 10);
+    setCurrentHp((previousHp) => previousHp + 10);
+    setUpgradeLevel((previousLevel) => previousLevel + 1);
+  }
 
-      if (newRelic.includes('Coffee Dripper')) {
-        setMaxEnergy(maxEnergy + 1);
-      }
+  if (chosenRelic.id === 'coffee_dripper') {
+    setMaxEnergy((previousMaxEnergy) => previousMaxEnergy + 1);
+    setEnergy((previousEnergy) => previousEnergy + 1);
+  }
 
-      if (newRelic.includes('Lantern')) {
-        setEnergy(Math.min(energy + 1, maxEnergy));
-      }
-    }
-  };
+  if (chosenRelic.id === 'lantern') {
+    setEnergy((previousEnergy) => previousEnergy + 1);
+  }
+};
   
   
 
@@ -250,22 +259,24 @@ const addRelic = () => {
           </div>
         </div>
         <div className="run-card">
-  <div className="text-lg font-bold text-amber-300">Relics</div>
+        <div className="text-lg font-bold text-amber-300">Relics</div>
 
-  <div className="mt-2 text-sm text-neutral-200 space-y-1">
-    {relics.map((relic, index) => (
-      <div key={index}>• {relic}</div>
-    ))}
-  </div>
+        <div className="mt-2 text-sm text-neutral-200 space-y-1">
+          {relics.map((relic) => (
+            <div key={relic.id}>
+              ⚡ {relic.name} ({relic.description})
+            </div>
+          ))}
+        </div>
 
-  <button
-    onClick={addRelic}
-    className="mt-3 w-full rounded-xl bg-amber-600 hover:bg-amber-500 p-2 font-bold text-white"
-  >
-    Gain Random Relic
-  </button>
-</div>
-</section>
+        <button
+          onClick={addRelic}
+          className="mt-3 w-full rounded-xl bg-amber-600 hover:bg-amber-500 p-2 font-bold text-white"
+        >
+          Gain Random Relic
+        </button>
+      </div>
+      </section>
 
         <section className="run-advice-layout">
         {/* Decision helper card */}
