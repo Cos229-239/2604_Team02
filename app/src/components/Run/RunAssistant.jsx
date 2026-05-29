@@ -1,6 +1,7 @@
 //health ui, potions, energy, basic decision rules, relics
 import { useState } from 'react';
-import ErrorBoundary from '../../data/sorter-fixes/error-handler/error-finder';
+import ErrorBoundary from '../data/sorter-fixes/error-handler/error-finder';
+import { getPathRecommendation } from "../data/sorter-fixes/runDecisionHelper";
 
 function RunAssistant({character, selectedAct}) {
     /*
@@ -13,6 +14,9 @@ function RunAssistant({character, selectedAct}) {
   const [upgradeLevel, setUpgradeLevel] = useState(0);
   const [maxEnergy, setMaxEnergy] = useState(3);
   const maxHp = 80;
+  const [healthStatus, setHealthStatus] = useState("healthy");
+  const [runGoal, setRunGoal] = useState("balanced");
+  const [pathType, setPathType] = useState("safe");
 
    /*
     State values track the current run situation.
@@ -261,6 +265,9 @@ const addRelic = () => {
     Gain Random Relic
   </button>
 </div>
+</section>
+
+        <section className="run-advice-layout">
         {/* Decision helper card */}
         <div className="run-card decision-card">
           <h3>Decision Helper</h3>
@@ -281,8 +288,63 @@ const addRelic = () => {
           and current act.
           */}
           <p>{getRunAdvice()}</p>
+          </div>
+
+          {/* Path recommendation card */}
+          <div className="run-card pathing-card">
+          <h3>Pathing Recommendation</h3>
+
+          <div className="run-input-group">
+            <label>Health Situation</label>
+            <select
+              value={healthStatus}
+              onChange={(e) => setHealthStatus(e.target.value)}
+            >
+              <option value="healthy">Healthy</option>
+              <option value="injured">Injured</option>
+              <option value="critical">Critical</option>
+            </select>
+          </div>
+
+          <div className="run-input-group">
+            <label>Run Goal</label>
+            <select
+              value={runGoal}
+              onChange={(e) => setRunGoal(e.target.value)}
+            >
+              <option value="balanced">Balanced</option>
+              <option value="offense">Improve Damage</option>
+              <option value="defense">Improve Defense</option>
+              <option value="upgrades">Find Upgrades</option>
+            </select>
+          </div>
+
+          <div className="run-input-group">
+            <label>Path Type</label>
+            <select
+              value={pathType}
+              onChange={(e) => setPathType(e.target.value)}
+            >
+              <option value="safe">Safe Path</option>
+              <option value="elite">Elite Path</option>
+              <option value="shop">Shop Path</option>
+              <option value="rest">Rest Site Path</option>
+            </select>
+          </div>
+
+          <div className="recommendation-box">
+            <h4>Recommendation</h4>
+            <p>
+              {getPathRecommendation({
+                healthStatus,
+                runGoal,
+                pathType,
+                selectedAct,
+              })}
+            </p>
+          </div>
         </div>
-      </section>
+        </section>
     </main>
   );
 }
