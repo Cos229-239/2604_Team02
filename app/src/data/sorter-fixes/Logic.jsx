@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import cards from "./cards2.json";
 import SortCards from "./sorter-fixes/card-sorter";
-import RewardChooser from "../components/Run";
+import Run from "../components/Run";
 import Monster from "../components/data/monsters.json";
 import Relic from "../components/data/relics.json";
 import Character from "../components/data/characters.json";
