@@ -6,16 +6,24 @@ import cards from "../cards2.json";
 
 export default function Statistics() {
     
-    // Extract character IDs from your JSON
-    const CHARACTER_IDS = characters.map(c => c.id);
-    // Extarct card IDs from your JSON
-    
+  // Extract character IDs from your JSON
+    const CHARACTER_IDS = Array.isArray(characters)
+        ? characters.map(c => c.id)
+        : [];
 
+    // Extract card IDs from your JSON
+    const CARD_IDS = Array.isArray(cards)
+        ? cards.map(card => card.id || card.name)
+        : [];
 
-    // Extract act IDs from your JSON (skip DEPRECATED_ACT)
-    const ACT_IDS = acts
-        .filter(a => a.id !== "DEPRECATED_ACT")
-        .map(a => a.id);
+    // Extract act IDs from your JSON, skip DEPRECATED_ACT
+    const ACT_IDS = Array.isArray(acts)
+        ? acts
+            .filter(a => a.id !== "DEPRECATED_ACT")
+            .map(a => a.id)
+        : [];
+
+        console.log("cards data:", cards);
 
     const [stats, setStats] = useState({});
     const [selectedCharacter, setSelectedCharacter] = useState(CHARACTER_IDS[0]);
