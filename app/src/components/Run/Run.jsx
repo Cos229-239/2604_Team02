@@ -3,7 +3,7 @@ import cards from "../../data/cards2.json";
 import SortCards from "../../data/sorter-fixes/card-sorter";
 import DataHelper from "../../data/sorter-fixes/runDataHelper";
 import { getMainArchetype, getRecommendedCard } from "./recommendationSystem";
-import CardRewards from "./CardRewards";
+import CardRewards from "./cardRewards";
 import { getStarterDeck } from "./starterDeck";
 import CharacterSelect from "./characterSelect";
 import RunAssistant from "./RunAssistant";
